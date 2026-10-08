@@ -32,9 +32,11 @@ Exit evidence: running local dashboard, measured interaction performance, scenar
 
 Delivered: independently checked renewal economics, exact segment aggregates, six-page Streamlit/Plotly dashboard, live assumptions, dynamic rule/stress editors, model switch with a fixed price anchor, risk calculator and support screens, JSON/CSV scenarios, sensitivity curve, measured local responsiveness and 72 passing tests. Public hosting remains unconfigured. See `docs/DASHBOARD_USAGE.md` and `reports/dashboard/COMMERCIAL_REPORT.md`.
 
-## Part 5 — Client handover (next)
+## Part 5 — Client handover (complete)
 
 Create a clean final README, verified two-page PDF written for a nontechnical pricing manager, an example scenario walkthrough and screenshots. Lead with the business question, bounded recommendation, evidence and risks. Include model cards, data provenance, reproducible setup, dashboard instructions and a complete handover checkpoint. Validate document page count/readability and dashboard deployment configuration. Publish verified deliverables to the specified GitHub repository.
+
+Delivered: verified two-page manager PDF with source manifest and deterministic builder; clean final README; client handover and five-minute walkthrough; GLM/boost/commercial-engine cards; deployment/artefact review; no-model checkout verification; and allowlisted aggregate ZIP packaging. The core case study is complete for review and demonstration. Public hosting remains a separate unconfigured decision.
 
 Optional Australian context follows the core work. Verify APRA/ICA/BOM data and licensing, analyse aggregate changes and explain implications for uncertainty, inflation or catastrophe risk without transferring French rating factors to Australia.
 

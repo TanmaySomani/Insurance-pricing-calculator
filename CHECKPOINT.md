@@ -1,14 +1,14 @@
-# Project checkpoint — Part 4 complete
+# Project checkpoint — Part 5 complete
 
 Updated: 8 October 2026, Australia/Brisbane.
 
-Repository: [TanmaySomani/Insurance-pricing-calculator](https://github.com/TanmaySomani/Insurance-pricing-calculator), branch `main`. Verify publication using `git status`, `git log -3 --oneline` and the remote before continuing. Parts 1–3 were published as `db0f098`, `ca26bfc` and `05856cd`; Part 4 publication is recorded in its handover.
+Repository: [TanmaySomani/Insurance-pricing-calculator](https://github.com/TanmaySomani/Insurance-pricing-calculator), branch `main`. Verify publication using `git status`, `git log -3 --oneline` and the remote before continuing. Parts 1–4 were published as `db0f098`, `ca26bfc`, `05856cd` and `ab39762`. Part 5 is the client-handover commit following Part 4; verify its exact hash in Git rather than embedding a self-referential hash in this file.
 
 ## Objective and delivery boundaries
 
 Build a client-ready motor pricing case study in resumable parts: public data; exposure-aware Poisson frequency and Gamma severity GLMs; boosting comparison; validation and diagnostics; commercial simulation and a live dashboard with editable/addable assumptions and segment rows; final two-page manager summary and GitHub handover. Optional Australian context comes after the core work. Complete one bounded part per handover.
 
-Parts 1–4 are complete. **Next is Part 5: the two-page manager brief and client handover.** Do not repeat model tuning or change targets using the now-published test results. The whole client delivery is not yet complete.
+Parts 1–5 are complete as a locally verified portfolio case study. Do not repeat tuning or change targets using published test results. The two-page manager brief, client handover, model cards, clean README and aggregate packaging are delivered. Public hosting, operational repricing and optional Australian context are separate future work, not missing core-case-study deliverables.
 
 ## Completed implementation
 
@@ -119,16 +119,40 @@ After source edits, reinstall with `python -m pip install --no-deps .`, or use `
 - `app.py`: Streamlit entry point; `docs/DASHBOARD_USAGE.md`: launch and interaction guide. Restart the server after source-module edits; reinstall regular package code when using its CLI.
 - Regenerate aggregate comparison figures: `PYTHONPATH=src .venv/bin/python figures/gen_fig_comparison.py`; GLM figures: `figures/gen_fig_glm.py`.
 
-## Not yet implemented
+## Remaining boundaries
 
-Public hosting, final two-page manager PDF and complete client handover/model cards. No actual renewal elasticity, achieved savings, current Australian pricing analysis, coefficient/parameter confidence bounds, monotonic constraints or temporal/customer validation. Source data lacks current premiums, renewals, dates and customer IDs. The core case study is operational locally; do not claim those absent facts or checks.
+Public hosting and optional Australian analysis remain unconfigured. No actual renewal elasticity, achieved savings, current Australian pricing analysis, coefficient/parameter confidence bounds, monotonic constraints, fairness/regulatory approval or temporal/customer validation are established. Source data lacks current premiums, renewals, dates and customer IDs. The five-part case study is ready for review and demonstration within those limits.
 
-## Next action: Part 5
+## Part 5 delivery and verification
 
-Read the business report, dashboard usage and model comparison first. Create the final two-page PDF for a nontechnical pricing manager, leading with the question, bounded recommendation and renewal sensitivity. Use the published example scenarios and distinguish historical observations, model outputs and assumptions. Explain missing costs, tail uncertainty, A/E reversal, absent current premiums/renewals and governance limitations candidly.
+- `output/pdf/pricing_manager_brief.pdf`: exactly two A4 pages, leading with the commercial question and conditional recommendation. Evidence values are read from frozen CSVs; input/script/PDF hashes are in `reports/handover/brief_manifest.json`. Both rendered pages were visually checked for layout/readability. Embedded sans fonts make the content portable.
+- `scripts/build_manager_brief.py`: deterministic PDF regeneration; optional `requirements-report.txt` pins ReportLab 4.4.9 and pypdf 6.10.0 without changing the modelling/application lock.
+- `docs/CLIENT_HANDOVER.md`: acceptance boundaries, clean install, five-minute live walkthrough, reconstruction, responsibility and proposed operational decision.
+- `docs/MODEL_CARDS.md`: targets/populations/features, fit/search, exposure, uncertainty, intended uses, unsupported uses, artefact identities and governance limitations.
+- `docs/DEPLOYMENT.md`: reviewed aggregate versus full-scoring setup, health/readiness, versioned release/rollback and host limitations.
+- Important deployment finding: `verify_selection` requires **both matching prepared policy/claim Parquet tables as well as both bundles**, configs, source and exact package versions. Shipping two joblibs alone cannot enable the current calculator. Prefer the aggregate demo for a public showcase until a controlled full-artefact or separately validated serving-manifest plan is chosen.
+- `scripts/verify_handover.py`: verifies exactly two pages, PDF sources and visible numeric values/link, recomputes five scenario JSONs against their CSV evidence, exercises a fresh aggregate-only app tree across six page states and a +5% edit, and checks optional trusted local models without mutation. `reports/handover/verification.json` records executed evidence; `review.json` records the separate visual/test review.
+- `scripts/package_client.py`: deterministic allowlisted client ZIP in local `dist/`, with per-file SHA-256 manifest and verification. No raw/prepared data, row-level exports, fitted model binaries, Git state, virtual environment or secrets are packaged. The source is committed; regenerated ZIP is local/Git-ignored.
+- CI now defines PDF regeneration/integrity, aggregate-only handover verification and packaging after application tests. Consult commit-specific remote results separately; do not infer CI success from the workflow definition.
+- Model/data/scenario source, frozen selection, comparison tables and application version 0.4.0 were preserved. No training, recalibration or new test-driven selection occurred in Part 5.
 
-Complete clean README/client handover, model cards, example scenario walkthrough, screenshot review and deployment packaging. Public hosting needs a deliberate plan for the risk-model binaries (currently Git-ignored) and verified runtime; the aggregate pages already run from the repository. Do not trigger fitting/downloading on dashboard edits. Verify PDF page count/render/readability, setup and the delivered dashboard. Publish to the agreed GitHub repo, update this checkpoint and keep optional Australian public-data context separate unless requested.
+Rebuild this handover:
+
+```bash
+source .venv/bin/activate
+python -m pip install -r requirements-report.txt
+python scripts/build_manager_brief.py
+PYTHONPATH=src python scripts/verify_handover.py
+PYTHONPATH=src python scripts/package_client.py
+python -m pytest -q
+```
+
+PDF previews are `output/pdf/pricing_manager_brief-page-1.png` and `-page-2.png`; re-render and inspect after content/layout edits. Main deployment uses the repository tree, not only an installed wheel.
+
+## Possible next work — choose a separate scope
+
+The five bounded parts are finished. A future task can add separately sourced Australian APRA/ICA/BOM context, arrange a deliberate public aggregate-demo deployment, or plan a new genuine insurer-data pricing study. Real operational repricing needs developed claims, current premiums, renewal/competitor evidence, expense economics, untouched time/customer validation and applicable governance review.
 
 Paste into a fresh chat:
 
-> Continue Part 5 of Insurance-pricing-calculator. Read CHECKPOINT.md, docs/DASHBOARD_USAGE.md, reports/dashboard/COMMERCIAL_REPORT.md and reports/comparison/MODEL_COMPARISON.md. Parts 1–4 are complete; the live dashboard and renewal engine are tested. Do not retune the frozen models. Produce the final two-page pricing-manager PDF, clean client README/handover, model cards and example walkthrough; review deployment packaging and the risk-calculator artefact requirements. Lead with the bounded commercial conclusion and distinguish observed/modelled/assumed values. Verify PDF page count/readability and reproducibility, publish to the agreed GitHub repository and update the checkpoint. Keep Australian context optional and separately evidenced.
+> Continue Insurance-pricing-calculator from CHECKPOINT.md. Parts 1–5 are complete: public-data audit, frozen GLM/boost comparison, tested live scenario dashboard, two-page manager PDF and client handover/model cards/aggregate packaging. Preserve the frozen estimand, models, test results and scenario identity. Do not retune or claim a hosted service, calibrated elasticity or production approval. Read docs/CLIENT_HANDOVER.md and docs/DEPLOYMENT.md, then carry out the newly requested scope. Optional Australian context must be separately sourced and evidenced; any full hosted risk calculator must account for both verified bundles and matching prepared data under the current verifier.

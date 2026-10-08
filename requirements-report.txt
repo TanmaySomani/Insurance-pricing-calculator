@@ -1,0 +1,4 @@
+# Optional PDF build/verification tools; main application lock is unchanged.
+# These versions were verified using the bundled PDF runtime for Part 5.
+reportlab==4.4.9
+pypdf==6.10.0

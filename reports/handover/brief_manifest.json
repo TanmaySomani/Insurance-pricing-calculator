@@ -1,0 +1,15 @@
+{
+  "pdf": "output/pdf/pricing_manager_brief.pdf",
+  "expected_pages": 2,
+  "sources_sha256": {
+    "reports/dashboard/example_scenarios.csv": "8f9abed38e93a38ca99ffc42a30878d38883d86806965105549ca84d340ea166",
+    "reports/comparison/metrics.csv": "9309b134ef172c91c49e5ac080db8f113ed7f7eabb9d78bb9b5a4e44deb1f61c",
+    "reports/comparison/paired_intervals.csv": "eeaa977016da0e0a8530c174491cea91c021ff4c6c0caa489e44a242a7d2efde",
+    "reports/dashboard/manifest.json": "4a8c4c2cb46893ea3f22cd97471e5c53af9242cb704d22136c4cbad4236a913c",
+    "reports/data_audit.json": "defd85d33d59f60166ee06444ed8f2fd9ca92303b9a4f46b260e8a66066a9092",
+    "reports/comparison/selection.json": "dd29613918c0d914799c33abb29686f492ee4cea163bcf175fb2132ef8205947"
+  },
+  "script_sha256": "b5bebb1e3d3d634efc0ed858e330537cd52210c3aadcca11e097def9f48d4c6c",
+  "pdf_sha256": "9ea30b2ef3f6b6389caaba94ceafff83c2ef635d42af1d8aa33e81a4c774ba73",
+  "reportlab_version": "4.4.9"
+}

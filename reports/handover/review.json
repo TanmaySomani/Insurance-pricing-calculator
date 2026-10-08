@@ -1,0 +1,32 @@
+{
+  "reviewed_on": "2026-10-08",
+  "application_version": "0.4.0",
+  "local_pytest": {
+    "passed": 72,
+    "elapsed_seconds": 5.52
+  },
+  "pdf_visual_review": {
+    "pages": 2,
+    "reviewed_both_rendered_pages": true,
+    "no_clipping_or_overlaps_observed": true,
+    "readability_checked": true,
+    "pdf_sha256": "9ea30b2ef3f6b6389caaba94ceafff83c2ef635d42af1d8aa33e81a4c774ba73",
+    "previews_sha256": {
+      "output/pdf/pricing_manager_brief-page-1.png": "e4105a6b0d5d8db1c14bb1cc01b4045bb61ec691e27875bf264bd0bb01a639cc",
+      "output/pdf/pricing_manager_brief-page-2.png": "0d1d342a26a8c3c4f1089220730074a7f854029c7edac827ecbc22b3df8b88ae"
+    }
+  },
+  "pdf_repeat_build_byte_identical": true,
+  "pip_check": "No broken requirements found",
+  "source_compile_and_diff_whitespace_check": "Passed",
+  "dashboard_screenshot_review": "Part 4 verified rate/comparison previews retained; app/model/engine sources unchanged in Part 5",
+  "release_mode": "Repository and locally regenerated allowlisted aggregate-demo ZIP",
+  "remote_ci_verified": false,
+  "public_hosting_configured": false,
+  "limitations": "Historical French recorded losses; synthetic prices and assumed renewals; no production/regulatory approval or Australian pricing transfer",
+  "extracted_client_zip_smoke": {
+    "all_six_pages_passed": true,
+    "live_plus_five_scenario_passed": true,
+    "no_policy_data_or_model_binaries": true
+  }
+}

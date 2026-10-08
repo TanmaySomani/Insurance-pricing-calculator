@@ -1,182 +1,105 @@
-# Motor Insurance Pricing Calculator
+# Motor Insurance Pricing Studio
 
-**Business question:** How should a motor insurer differentiate prices by risk while balancing expected claims, retention, and underwriting contribution?
+**Business question:** Can an insurer improve risk differentiation and annual underwriting contribution without losing too much renewal volume?
 
-**Current conclusion:** Use boosting as the default for the illustrative dashboard and retain the Poisson/Gamma GLM as an explainable benchmark. On the frozen final test, boosting reduces recorded pure-premium deviance by 3.2% and raises raw exposure Gini from 0.359 to 0.423. Paired sampling intervals support those gains; top-decile lift improvement remains uncertain. Missing claim costs and large-loss uncertainty prevent a live tariff recommendation.
+**Conclusion:** Use boosting for illustrative scenario exploration and retain the Poisson/Gamma GLM as an explainable benchmark. Investigate a bounded +5% rate option with actual premium and renewal evidence before rollout. At assumed elasticity 1.2, the example adds **EUR 1.02m contribution** with **6,537 fewer retained policies**; at elasticity 6, it loses **EUR 0.30m**. These are conditional simulations using synthetic prices, not achieved savings or a recommended live tariff.
 
-This is a staged portfolio case study using French motor third-party liability data. Data, GLMs and the boosting comparison are implemented. The live commercial dashboard is implemented. The final two-page manager brief and client handover are next.
+All five core parts are complete as a reproducible, locally verified portfolio case study. Public hosting, production approval and optional Australian context are outside this completed delivery.
 
-## Delivery checkpoints
+**Start with the [two-page pricing-manager brief](output/pdf/pricing_manager_brief.pdf), [client handover](docs/CLIENT_HANDOVER.md) or [dashboard guide](docs/DASHBOARD_USAGE.md).**
 
-| Part | Deliverable | Status |
-|---|---|---|
-| 1 | Public data, provenance, quality audit, engineered features, frozen splits | Complete |
-| 2 | Poisson frequency + Gamma severity GLMs, pure premium, diagnostics | Complete |
-| 3 | Gradient boosting, lift/Gini/decile validation, model recommendation | Complete |
-| 4 | Commercial simulation and live dashboard with editable assumptions | Complete |
-| 5 | Client presentation, two-page summary, deployment and final review | Next |
-| Optional | Australian market risk context with separately sourced public data | After core delivery |
+![Live pricing dashboard: five-percent illustrative scenario](reports/dashboard/screenshots/rate-scenario.jpg)
 
-Resume instructions are in [CHECKPOINT.md](CHECKPOINT.md). Each part will finish with updated commands, tests, findings, and the next task. A checkpoint is a deliberate handover point, not a claim that the whole project is finished.
+## Run the dashboard
 
-## Why this dataset
-
-The primary source is **freMTPL2, OpenML version 1**:
-
-- [41214 — frequency](https://www.openml.org/d/41214): policy risk characteristics, exposure and original claim counts.
-- [41215 — severity](https://www.openml.org/d/41215): claim amounts linked through `IDpol`.
-- [CASdatasets documentation](https://dutangc.github.io/CASdatasets/reference/freMTPL.html): provenance and field definitions.
-
-OpenML reports CC0 for both dataset snapshots. Attribution and download checksums are recorded in [data_manifest.json](reports/data_manifest.json). The OpenML snapshot contains **678,013 policies**, whereas the CASdatasets description refers to 677,991; this project pins the downloaded OpenML bytes rather than treating different versions as interchangeable.
-
-The [Allstate Kaggle competition](https://www.kaggle.com/competitions/allstate-claims-severity/data) is a useful severity alternative. We choose freMTPL2 because its linked policy exposure, counts, and costs support the full requested pricing workflow. See [DATA_SOURCES.md](docs/DATA_SOURCES.md).
-
-## What Part 1 found
-
-| Measure | Value |
-|---|---:|
-| Raw policy rows | 678,013 |
-| Raw claim-cost records | 26,639 |
-| Matched claim-cost records | 26,444 |
-| Exposure | 358,499.45 policy-years |
-| Original claim count | 36,102 |
-| Policies reporting claims without any cost record | 9,116 |
-| Orphan claim records excluded from modelling | 195 |
-| Recorded cost per policy-year | EUR 167.11 |
-
-These describe the snapshot; EUR 167.11 is **not a fitted premium or a recommended rate**. No currency conversion, inflation, loss development, expenses, or profit allowance is included. The largest 1% of matched claims account for approximately 38% of recorded cost, so tail uncertainty will matter in model comparison.
-
-The main estimand is **expected cost represented in the linked claim-cost table**. Frequency uses its count of recorded claims; severity uses positive individual claim costs. Original `ClaimNb` remains available for a separately labelled sensitivity. Missing costs are flagged, never presented as evidence of zero ultimate loss. Full detail: [data audit](reports/DATA_AUDIT.md) and [methodology](docs/METHODOLOGY.md).
-
-## Reproduce Part 1
-
-Use Python 3.14 for the verified environment. The package allows Python 3.12–3.14; other environments still need validation. Run from the repository root:
+From the repository root, using the verified Python 3.14 environment:
 
 ```bash
 python3.14 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.lock.txt
 python -m pip install --no-deps .
-insurance-pricing prepare
-python -m pytest -q
-```
-
-The first prepare downloads about 7.75 MB from OpenML using HTTPS, with no Kaggle credentials. Later runs verify the cached bytes against the committed SHA-256 source lock. Structural data defects halt preparation. If a cache is corrupted, remove the affected local raw file and rerun; do not casually update the source lock.
-
-`insurance-pricing download` downloads and verifies sources without preparation. To run elsewhere, pass `--root /absolute/path/to/repository`. After editing package code, reinstall with `python -m pip install --no-deps .`, or run directly from source with `PYTHONPATH=src .venv/bin/python -m insurance_pricing.cli prepare`.
-
-The setup uses a regular package install. Editable installs can fail in macOS environments that mark `.pth` files hidden, because Python skips those files; this [CPython issue](https://github.com/python/cpython/issues/148121) occurred locally. A regular install or the direct-source command above avoids relying on an editable `.pth` file.
-
-Outputs:
-
-- `data/processed/policies.parquet`: one row per policy, raw risk factors, features, both target definitions, flags, partition.
-- `data/processed/claims.parquet`: one row per matched claim, risk factors, features, inherited partition.
-- [reports/](reports/): provenance, audit, reconciliation and descriptive segment summary. Raw/processed records are excluded from Git; reproducible code and aggregate reports are committed.
-
-## Live interactive dashboard — Part 4
-
-The Streamlit/Plotly dashboard provides portfolio/model results, segment diagnostics, an individual risk calculator and commercial scenarios. Assumption edits recalculate expected retention, retained policies, premium, claims, scenario loss ratio and underwriting contribution. Add/edit/remove segment adjustments and response overrides; add named stress parameters; save, compare, download and reload scenarios.
-
-```bash
-source .venv/bin/activate
 python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8502
 ```
 
-Open [localhost:8502](http://127.0.0.1:8502). The scenario and diagnostic pages work from verified aggregate evidence committed to GitHub. The risk calculator additionally needs the local fitted bundles. After the modelling pipeline, run `insurance-pricing prepare-dashboard` to rebuild/version the aggregates without refitting. See [DASHBOARD_USAGE.md](docs/DASHBOARD_USAGE.md) for setup, inputs, row editing, scenario persistence and limits.
+Open [localhost:8502](http://127.0.0.1:8502). Scenario, portfolio, comparison, segment and saved-scenario pages run from committed, checksum-verified aggregate evidence. **Individual risk scoring additionally requires the full verified local pipeline**, including both fitted bundles and both matching prepared data tables. A fresh checkout shows a usable setup message on that page. No fitting or downloads occur when a user changes a parameter.
 
-The +5% illustrative scenario, at assumed elasticity 1.2, increases contribution by about **EUR 1.02m** while losing about **6,537 retained policies**. At elasticity 6 the contribution change is **−EUR 0.30m**. The recommendation is to investigate a bounded move and measure renewal response before rollout; these are simulated results at synthetic premiums, not achieved savings. Full assumptions and sensitivity are in [COMMERCIAL_REPORT.md](reports/dashboard/COMMERCIAL_REPORT.md).
+The six-page Streamlit/Plotly dashboard supports live rate, elasticity, retention, claims-inflation and expense changes; add/edit/remove segment adjustments and response overrides; named frequency/severity/loss stresses; sensitivity curves; model comparison at a fixed price anchor; hypothetical risk inputs and support warnings; and JSON/CSV exports with save/compare/restore/reload. Session saves need a download to persist. Added stress controls are assumptions; a new learned risk variable requires training data and a validated refit.
 
-![Live pricing dashboard](reports/dashboard/screenshots/rate-scenario.jpg)
+See the [five-minute manager walkthrough](docs/CLIENT_HANDOVER.md#five-minute-manager-demonstration). [Example scenario JSON/CSV](reports/dashboard/) reproduces the commercial table. [Deployment review](docs/DEPLOYMENT.md) documents the aggregate package and full-calculator artefact requirements; no public service is claimed.
 
-Inputs include rate change, baseline retention, elasticity, claims inflation, expense ratio, fixed expense and margin. Claims model choice switches between GLM and boosting while the selected baseline price anchor stays fixed for fair comparison. New rating variables will require available training data and a validated model refit; adding a dashboard control alone cannot create a learned risk effect. See [DASHBOARD_SPEC.md](docs/DASHBOARD_SPEC.md).
+## Frozen evidence and model choice
 
-## Part 2: interpretable pricing baseline
+On the same final test (135,246 policies, 5,270 linked claims):
 
-Run after preparing data, using the installed package or directly from source:
-
-```bash
-insurance-pricing train-glm
-# Development alternative after editing source:
-PYTHONPATH=src .venv/bin/python -m insurance_pricing.cli train-glm
-```
-
-The main models are unpenalised log-link Poisson/Gamma GLMs with 58 parameters each, including intercept. Frequency uses annual claim rates with exposure weights; severity uses individual positive claims with unit weights. Train-only category encoding has explicit references and rejects unseen categories. Part 2 fitted and evaluated train/validation only; the frozen final test comparison was added in Part 3.
-
-| Validation measure | Intercept | GLM |
+| Historical test measure | GLM | Boosting |
 |---|---:|---:|
-| Frequency Poisson deviance / exposure | 0.4743 | 0.4548 |
-| Severity Gamma deviance / claim | 1.7756 | 1.7445 |
-| Pure-premium Tweedie p=1.5 deviance / exposure | 87.0471 | 81.2033 |
-| Recorded pure-premium actual / expected | 0.9527 | 0.9961 |
+| Pure-premium Tweedie deviance / exposure (lower is better) | 76.353 | 73.877 |
+| Raw exposure Gini (higher is better) | 0.359 | 0.423 |
+| Normalised Gini | 0.365 | 0.429 |
+| Top-decile observed cost-rate / portfolio-rate lift | 2.681 | 3.453 |
+| Actual / expected recorded cost (target 1) | 0.886 | 0.961 |
+| Expected annual recorded cost, EUR | 165.98 | 153.08 |
 
-The main pure-premium A/E has a fixed-prediction policy-bootstrap 95% interval of **0.806–1.233**. This covers validation sampling variability only. The illustrative original-count estimate is EUR 229.66/year; the training-p99-capped severity sensitivity is EUR 117.65/year. Neither replaces the uncapped main recorded-cost estimate. Good aggregate calibration also hides material age/region differences.
+Boosting reduces pure-premium deviance by **3.24%**. Paired 250-draw policy-bootstrap intervals support the deviance and Gini improvements: boosting-minus-GLM deviance -2.476 [-5.743, -0.391], raw Gini +0.064 [0.019, 0.104]. Top-decile lift difference +0.772 [-0.376, 2.396] and severity-deviance difference remain uncertain. These fixed-prediction intervals exclude fitting/search, missing costs and drift. Actual test recorded cost is EUR 147.10/year.
 
-See [GLM_REPORT.md](reports/glm/GLM_REPORT.md) for deciles, segment coverage, coefficients, residuals, influence diagnostics, sensitivities and business interpretation.
+GLM uses explicit multiplicative factors and reference bands. Boosting captures nonlinear interactions but needs more explanation and stability review; monotonicity is not imposed. Neither model has established jurisdiction-specific regulatory acceptance or production approval. The dashboard-default choice was frozen on validation before test access. See [model cards](docs/MODEL_CARDS.md), [comparison report](reports/comparison/MODEL_COMPARISON.md) and [GLM diagnostics](reports/glm/GLM_REPORT.md).
 
-![Validation calibration](reports/glm/figures/validation_deciles.png)
+## Data, targets and limitations
 
-Training saves the reusable model bundle, policy/claim predictions, and row-level residuals under local `artifacts/glm/`. Prediction columns use the `pred_` prefix to preserve all observed fields. Source/config/code/processed-data hashes, package versions and convergence details are in [training_metadata.json](reports/glm/training_metadata.json). Aggregate reports and PNG/vector PDF charts are committed. Regenerate figures with `PYTHONPATH=src .venv/bin/python figures/gen_fig_glm.py`.
+Public source: **freMTPL2, OpenML version 1**, [frequency 41214](https://www.openml.org/d/41214) and [severity 41215](https://www.openml.org/d/41215). Attribution: C. Dutang and A. Charpentier, CASdatasets (2018); [CASdatasets field documentation](https://dutangc.github.io/CASdatasets/reference/freMTPL.html). CC0 is reported in the saved OpenML metadata. [Source manifest](reports/data_manifest.json) and [source lock](configs/source_lock.json) pin the exact downloaded bytes. No Kaggle credentials are needed. freMTPL2 was chosen over a severity-only competition because linked exposures, counts and costs support the complete workflow.
 
-Part 2 was verified by full training on the real snapshot and **32 passing tests**, including an independent count/offset likelihood comparison, score-equation checks, model serialization, holdout leakage guards and prediction export integrity. Part 3 adds Gini, model-comparison lift uncertainty and final test results below.
+The pinned snapshot contains 678,013 policies, 26,444 linked positive costs and 358,499.45 policy-years. It differs from the 677,991 policies described for the CASdatasets version; snapshots are not interchangeable. There are 195 orphan severity records and **9,116 policies reporting claims without any linked cost record**. Missing costs are not established zero ultimate losses. The largest 1% of linked claims accounts for approximately 38% of recorded cost. See [data audit](reports/DATA_AUDIT.md) and [data-source rationale](docs/DATA_SOURCES.md).
 
-## Part 3: boosting comparison and frozen final test
+The main estimand is annual cost represented in the linked severity table: recorded-count frequency times individual recorded-cost severity. Original claim counts remain a separately labelled sensitivity. Source exposure stays uncapped when positive. Historical evaluation weights by exposure; commercial scenarios use one assumed annual renewal per policy.
 
-From a fresh checkout, run the stages in order after setup:
+Prices and response are assumed: baseline GLM price `(annual model loss + EUR 30) / 0.65`, retention 85%, elasticity 1.2, variable expense 25%, margin 10%, no inflation and a combined -20% to +20% rate corridor. The claims model defaults to boosting; switching it holds the chosen price anchor fixed. Inflation/stress affects both cases in the default same-stress comparison. [Commercial evidence](reports/dashboard/COMMERCIAL_REPORT.md) explains the sensitivity and expense basis.
+
+Current premiums, renewal outcomes, customer/time identifiers and developed ultimate claims are absent. Scenario loss ratios use synthetic premiums; contribution excludes capital, reinsurance, tax, investment income, new business and unmodelled anti-selection. The 75+ GLM A/E reverses from about 1.67 on validation to 0.70 on test: segment ratios warrant investigation, not automatic rate changes. Historical French liability EUR results do not establish current Australian motor or home prices.
+
+## Reproduce the analysis
+
+After installing the environment above:
 
 ```bash
 insurance-pricing prepare
 insurance-pricing train-glm
 insurance-pricing train-boost
 insurance-pricing evaluate
+insurance-pricing prepare-dashboard
 python -m pytest -q
 ```
 
-Once bundles exist, `insurance-pricing evaluate` verifies their selection/data/config/code/version checksums before scoring and can regenerate evidence without refitting. Do not change the search after inspecting the published test results. Rebuilding in a different runtime requires rebuilding the earlier stages; local bundles are not distributed or guaranteed portable across library versions.
+Preparation downloads about 7.75 MB once and verifies source SHA-256 hashes. Policy-ID hashing with seed 20261008 assigns approximately 60/20/20 splits; claims inherit policy splits. Feature/category fitting uses train only. GLM annual-rate frequency uses exposure weights (equivalent to a count/log-exposure-offset likelihood); Gamma severity uses individual positive claims with unit weights. Annual predictions multiply into pure premium. Boosting uses Poisson/Gamma components, native categories and continuous risk inputs with three predeclared validation candidates per component.
 
-Histogram boosting uses Poisson frequency loss with exposure weights and Gamma severity loss on individual claims. A predeclared three-candidate search for each component selects on validation only. Continuous age/power/bonus features complement native categorical area/brand/fuel/region handling. No outcome or exposure is a rating predictor; no calibration multiplier is applied. The illustrative dashboard-default decision is saved before test access in [selection.json](reports/comparison/selection.json).
+Selection is frozen before final evaluation; main costs remain uncapped and there is no post-test calibration/refit. **Do not retune on the now-published test.** Replacing risk variables or selection needs a new untouched evaluation population. Existing local bundles allow evaluation without refitting, subject to config/code/data/runtime hashes. Other runtime versions need a consistent rebuild of earlier stages rather than unchecked binary reuse.
 
-| Final-test measure | GLM | Boosting |
-|---|---:|---:|
-| Pure-premium Tweedie p=1.5 deviance / exposure | 76.353 | 73.877 |
-| Raw exposure concentration Gini | 0.359 | 0.423 |
-| Normalised Gini | 0.365 | 0.429 |
-| Top-decile observed cost / portfolio cost rate | 2.681 | 3.453 |
-| Recorded cost actual / expected | 0.886 | 0.961 |
-| Expected recorded cost / policy-year, EUR | 165.98 | 153.08 |
+Raw/prepared records, row-level predictions and model binaries under `data/` and `artifacts/` are Git-ignored. Aggregate evidence is committed. After package-source edits reinstall using `python -m pip install --no-deps .`, or use `PYTHONPATH=src .venv/bin/python -m insurance_pricing.cli <command>`. Restart Streamlit after imported-module edits. The verified setup uses a regular install because a macOS hidden `.pth` issue affected editable installs.
 
-Actual final-test recorded cost is EUR 147.10/year on 135,246 policies and 5,270 linked claims. Paired 250-replicate policy-bootstrap intervals give boosting-minus-GLM pure deviance **−2.476 [−5.743, −0.391]**, raw Gini **+0.064 [0.019, 0.104]**, and top-decile lift **+0.772 [−0.376, 2.396]**. Predictions and bins stay fixed; intervals exclude parameter/tuning uncertainty, missing costs and drift. Higher A/E alone is not a quality gain; closeness to one matters.
+Detailed feature engineering, exposure treatment, validation, diagnostics and sensitivity contracts are in [METHODOLOGY.md](docs/METHODOLOGY.md). Rebuild comparison figures using `PYTHONPATH=src python figures/gen_fig_comparison.py`; GLM figures use `figures/gen_fig_glm.py`.
 
-The model recommendation is bounded: proceed with boosting for commercial scenario exploration and keep GLM available. Investigate segment differences before repricing. The GLM's 75+ A/E changes from about 1.67 on validation to 0.70 on test, showing why an isolated segment ratio is a poor rate-change rule. The 55–64 group remains below one in both holdouts, but a real rate decrease requires current premium and retention evidence.
+## Verify and package the handover
 
-See [MODEL_COMPARISON.md](reports/comparison/MODEL_COMPARISON.md) for the tuning search, paired uncertainty, decile/segment intervals, capped-outcome and largest-policy sensitivities, model response examples, interpretability and governance trade-offs.
-
-![Paired final-test comparison](reports/comparison/figures/paired_uncertainty.png)
-
-Part 3 saves reusable boosting models under local `artifacts/boost/` and holdout predictions under `artifacts/comparison/`. Aggregate reports and five PNG/vector PDF figure pairs are committed. Regenerate figures with `PYTHONPATH=src .venv/bin/python figures/gen_fig_comparison.py`. Package version 0.3.0 is verified with **45 passing local tests**, including independent exposure-weighted Gini arithmetic, paired identical-model bootstrap checks, correct Poisson exposure weights, holdout rejection and checksum-tampering detection. Repeated frozen evaluation reproduces numerical CSV evidence and leaves both model bundles and the selection record unchanged. Remote GitHub CI status must be verified separately.
-
-Part 4 package version 0.4.0 is verified with **72 passing local tests**, exact aggregate versus independent policy-level scenario reconciliation, live JSON upload/reload, and a warm browser KPI update of **0.36 seconds** on the documented local machine. The full warm Python-side rerun p95 was about 0.14 seconds. No model was refitted or selected again. Public hosting and the final manager PDF belong to Part 5.
-
-## Judgement and limitations
-
-- Historical French liability costs are not current Australian motor or home prices.
-- Random policy holdouts cannot measure future performance; dates and customer identifiers are absent.
-- Recorded-cost incompleteness may vary by segment. This uncertainty is central to interpretation.
-- Baseline premiums and elasticity will be explicit assumptions because historical premiums and renewal outcomes are unavailable.
-- An interpretable GLM helps explain rating factors; neither GLMs nor boosting have automatic regulatory approval. Governance, permitted variables, fairness, stability, and documentation must be assessed for the deployment jurisdiction.
-- Business recommendations follow model evidence and commercial sensitivity, with actual premium and renewal evidence required before repricing.
-
-## Project structure
-
-```text
-configs/                 Source checksum lock and data/split decisions
-src/insurance_pricing/   Reusable download, preparation and feature code
-tests/                   Financial integrity and leakage safeguards
-data/raw/                Local verified source cache (not committed)
-data/processed/          Reproducible policy and claim tables (not committed)
-reports/                 Committed aggregate audit evidence
-docs/                    Sources, methodology, dashboard and roadmap
-artifacts/               Local model, prediction and residual artifacts (not committed)
-figures/                 Figure regeneration scripts
+```bash
+python -m pip install -r requirements-report.txt
+python scripts/build_manager_brief.py
+PYTHONPATH=src python scripts/verify_handover.py
+PYTHONPATH=src python scripts/package_client.py
 ```
 
-Code is MIT licensed; source-data licensing is separately reported by OpenML. GLM/boosting holdout evidence and clearly labelled commercial simulations are available; no achieved savings or Australian pricing conclusions are claimed.
+Part 5 verifies the two-page PDF, source/value/link hashes, all five recomputed examples, a clean aggregate-only app tree, all six page states and a live +5% edit. The local ZIP under `dist/` has an allowlist and per-file integrity manifest; it excludes policy records and fitted binaries. Optional PDF tools do not change the main application lock.
+
+Local application evidence: **72 tests pass**, independent full 135,246-policy scenario reconciliation at relative tolerance 1e-12, unchanged model/selection hashes, verified browser JSON reload and a measured warm KPI update of 0.36 seconds. Warm timings are local observations, not hosting guarantees. [Part 4 verification](reports/dashboard/verification.json), [Part 5 verification](reports/handover/verification.json) and [handover review](reports/handover/review.json) distinguish automated checks from visual review. [GitHub Actions](https://github.com/TanmaySomani/Insurance-pricing-calculator/actions) provides commit-specific remote evidence; a workflow definition alone is not a passed run.
+
+## Delivery checkpoints
+
+| Part | Deliverable | Status |
+|---|---|---|
+| 1 | Public source, provenance, audit, features and fixed splits | Complete |
+| 2 | Poisson/Gamma GLMs, pure premium and diagnostics | Complete |
+| 3 | Boosting, lift/Gini/deciles, uncertainty and frozen comparison | Complete |
+| 4 | Annual-renewal simulation and live editable dashboard | Complete |
+| 5 | Two-page brief, client handover, model cards and packaging review | Complete |
+| Optional | Separately sourced Australian public-data context | Not started |
+
+[CHECKPOINT.md](CHECKPOINT.md) preserves decisions, commands and continuation boundaries. The core case study is delivered for review and demonstration. Real repricing requires developed claims, actual premiums and renewals, credible expenses, customer/time validation and applicable governance review.

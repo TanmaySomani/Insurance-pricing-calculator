@@ -1,0 +1,29 @@
+{
+  "python": "3.14.7",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "fingerprint": "5b7f4832d54773ce257b8cd2b61f10bb4755d653304f572f059812db0b9fae91",
+  "pdf_pages": 2,
+  "pdf_sources_and_values_verified": true,
+  "pdf_link_verified": true,
+  "example_scenarios_recomputed": 5,
+  "aggregate_only_pages_verified": [
+    "Rate scenarios",
+    "Portfolio",
+    "Model comparison",
+    "Segment diagnostics",
+    "Risk calculator",
+    "Saved scenarios"
+  ],
+  "aggregate_only_live_edit_verified": true,
+  "aggregate_only_risk_setup_state_verified": true,
+  "models": {
+    "trusted_local_models_verified": true,
+    "unchanged_sha256": {
+      "artifacts/glm/bundle.joblib": "d522e47661aa671cd45f21a8a8a012f7918bda39e8eefa2599702cfdb1bbda64",
+      "artifacts/boost/bundle.joblib": "d1b804e5e783d9ddbdb86f0ed5f0b808674567acc73e3426d4a1ed7076c59aea"
+    }
+  },
+  "reportlab_version": "4.4.9",
+  "pypdf_version": "6.10.0",
+  "scope": "Local checks. PDF visual review and remote CI status are recorded separately."
+}
