@@ -8,7 +8,7 @@ from insurance_pricing.download import download
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Insurance pricing project pipeline")
-    parser.add_argument("command", choices=["download", "prepare"])
+    parser.add_argument("command", choices=["download", "prepare", "train-glm"])
     parser.add_argument("--root", type=Path, default=Path.cwd())
     args = parser.parse_args()
     root = args.root.resolve()
@@ -16,10 +16,14 @@ def main() -> None:
         parser.error("--root must point to the project repository")
     if args.command == "download":
         download(root)
-    else:
+    elif args.command == "prepare":
         from insurance_pricing.data import prepare
 
         prepare(root)
+    else:
+        from insurance_pricing.training import train_glm
+
+        train_glm(root)
 
 
 if __name__ == "__main__":

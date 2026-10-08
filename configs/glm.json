@@ -1,0 +1,21 @@
+{
+  "alpha": 0.0,
+  "solver": "newton-cholesky",
+  "max_iter": 1000,
+  "tol": 1e-8,
+  "threads": 2,
+  "tweedie_power": 1.5,
+  "severity_cap_quantile": 0.99,
+  "bootstrap_seed": 20261008,
+  "bootstrap_replicates": 250,
+  "minimum_segment_claims": 100,
+  "categorical_references": {
+    "Area": "C",
+    "VehBrand": "B1",
+    "VehGas": "Diesel",
+    "Region": "R24",
+    "driver_age_band": "35–44",
+    "vehicle_age_band": "1–5",
+    "vehicle_power_band": "6"
+  }
+}

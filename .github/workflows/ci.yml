@@ -1,4 +1,4 @@
-name: Data integrity checks
+name: Data and GLM integrity checks
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read

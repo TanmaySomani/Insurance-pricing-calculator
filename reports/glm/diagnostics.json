@@ -1,0 +1,26 @@
+{
+  "frequency": {
+    "family": "poisson",
+    "observations": 407081,
+    "parameters_including_intercept": 58,
+    "pearson_dispersion": 1.7660063650500402,
+    "sum_deviance": 98813.109762095,
+    "maximum_leverage": 0.015812887764102224,
+    "leverage_sum": 57.99999999999037,
+    "maximum_cook_like_proxy": 0.006632034194004069,
+    "absolute_deviance_residual_p99": 2.2388415767563297,
+    "note": "Approximate one-step influence; not an exact leave-one-out change. Gamma dispersion is especially tail-sensitive."
+  },
+  "severity": {
+    "family": "gamma",
+    "observations": 15945,
+    "parameters_including_intercept": 58,
+    "pearson_dispersion": 23.375753116175584,
+    "sum_deviance": 25188.98529354847,
+    "maximum_leverage": 0.04627579238028882,
+    "leverage_sum": 58.00000000000148,
+    "maximum_cook_like_proxy": 0.27094718613160507,
+    "absolute_deviance_residual_p99": 3.3857843000820225,
+    "note": "Approximate one-step influence; not an exact leave-one-out change. Gamma dispersion is especially tail-sensitive."
+  }
+}

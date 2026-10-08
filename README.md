@@ -2,17 +2,17 @@
 
 **Business question:** How should a motor insurer differentiate prices by risk while balancing expected claims, retention, and underwriting contribution?
 
-**Current conclusion:** Build an interpretable pricing baseline and test a boosting challenger, but treat commercial rate recommendations as scenarios. The selected public data has no premiums or renewal outcomes, and claim counts do not fully reconcile with recorded costs. Part 1 quantifies those gaps before modelling.
+**Current conclusion:** Keep the Poisson/Gamma GLM as an interpretable benchmark and proceed to a boosting comparison. On validation it reduces pure-premium deviance by 6.7% versus an intercept-only benchmark and predicts EUR 166.56 per policy-year against EUR 165.91 recorded. Missing claim costs and large-loss uncertainty prevent treating this as a deployable rate recommendation.
 
-This is a staged portfolio case study using French motor third-party liability data. It is being developed toward a manager-facing pricing dashboard and a two-page decision brief. **The models and dashboard are not implemented yet.**
+This is a staged portfolio case study using French motor third-party liability data. The GLM baseline is implemented; the boosting comparison, manager-facing dashboard and final two-page decision brief remain planned.
 
 ## Delivery checkpoints
 
 | Part | Deliverable | Status |
 |---|---|---|
 | 1 | Public data, provenance, quality audit, engineered features, frozen splits | Complete |
-| 2 | Poisson frequency + Gamma severity GLMs, pure premium, diagnostics | Next |
-| 3 | Gradient boosting, lift/Gini/decile validation, model recommendation | Planned |
+| 2 | Poisson frequency + Gamma severity GLMs, pure premium, diagnostics | Complete |
+| 3 | Gradient boosting, lift/Gini/decile validation, model recommendation | Next |
 | 4 | Commercial simulation and live dashboard with editable assumptions | Planned |
 | 5 | Client presentation, two-page summary, deployment and final review | Planned |
 | Optional | Australian market risk context with separately sourced public data | After core delivery |
@@ -79,6 +79,35 @@ Python + Streamlit will provide portfolio/model results, segment diagnostics, an
 
 Inputs include rate change, baseline retention, elasticity, claims inflation, expense ratio, fixed expense and margin. Model choice will switch between GLM and boosting. New rating variables will require available training data and a validated model refit; adding a dashboard control alone cannot create a learned risk effect. See [DASHBOARD_SPEC.md](docs/DASHBOARD_SPEC.md).
 
+## Part 2: interpretable pricing baseline
+
+Run after preparing data, using the installed package or directly from source:
+
+```bash
+insurance-pricing train-glm
+# Development alternative after editing source:
+PYTHONPATH=src .venv/bin/python -m insurance_pricing.cli train-glm
+```
+
+The main models are unpenalised log-link Poisson/Gamma GLMs with 58 parameters each, including intercept. Frequency uses annual claim rates with exposure weights; severity uses individual positive claims with unit weights. Train-only category encoding has explicit references and rejects unseen categories. The final test partition has not been scored.
+
+| Validation measure | Intercept | GLM |
+|---|---:|---:|
+| Frequency Poisson deviance / exposure | 0.4743 | 0.4548 |
+| Severity Gamma deviance / claim | 1.7756 | 1.7445 |
+| Pure-premium Tweedie p=1.5 deviance / exposure | 87.0471 | 81.2033 |
+| Recorded pure-premium actual / expected | 0.9527 | 0.9961 |
+
+The main pure-premium A/E has a fixed-prediction policy-bootstrap 95% interval of **0.806–1.233**. This covers validation sampling variability only. The illustrative original-count estimate is EUR 229.66/year; the training-p99-capped severity sensitivity is EUR 117.65/year. Neither replaces the uncapped main recorded-cost estimate. Good aggregate calibration also hides material age/region differences.
+
+See [GLM_REPORT.md](reports/glm/GLM_REPORT.md) for deciles, segment coverage, coefficients, residuals, influence diagnostics, sensitivities and business interpretation.
+
+![Validation calibration](reports/glm/figures/validation_deciles.png)
+
+Training saves the reusable model bundle, policy/claim predictions, and row-level residuals under local `artifacts/glm/`. Prediction columns use the `pred_` prefix to preserve all observed fields. Source/config/code/processed-data hashes, package versions and convergence details are in [training_metadata.json](reports/glm/training_metadata.json). Aggregate reports and PNG/vector PDF charts are committed. Regenerate figures with `PYTHONPATH=src .venv/bin/python figures/gen_fig_glm.py`.
+
+Part 2 was verified by full training on the real snapshot and **32 passing tests**, including an independent count/offset likelihood comparison, score-equation checks, model serialization, holdout leakage guards and prediction export integrity. Gini, model-comparison lift uncertainty and final test results belong to Part 3.
+
 ## Judgement and limitations
 
 - Historical French liability costs are not current Australian motor or home prices.
@@ -98,7 +127,8 @@ data/raw/                Local verified source cache (not committed)
 data/processed/          Reproducible policy and claim tables (not committed)
 reports/                 Committed aggregate audit evidence
 docs/                    Sources, methodology, dashboard and roadmap
-artifacts/               Future local model artifacts (not committed)
+artifacts/               Local model, prediction and residual artifacts (not committed)
+figures/                 Figure regeneration scripts
 ```
 
-Code is MIT licensed; source-data licensing is separately reported by OpenML. No fitted results, simulated profits, or Australian conclusions have been claimed at this checkpoint.
+Code is MIT licensed; source-data licensing is separately reported by OpenML. Fitted GLM validation results are available; simulated profits and Australian conclusions have not been claimed.

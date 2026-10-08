@@ -1,6 +1,6 @@
 # Pricing methodology and decision rules
 
-This document separates implemented data decisions from planned models. At Part 1, data preparation is implemented; modelling, evaluation, and commercial simulation are planned.
+At Part 2, data preparation and the unpenalised Poisson/Gamma baseline are implemented, with train/validation diagnostics and sensitivity checks. Boosting, Gini/model comparison, final test evaluation and commercial simulation remain planned.
 
 ## Business objective and target
 
@@ -12,7 +12,7 @@ Some policies have original `ClaimNb > 0` but no cost row. Their recorded-cost c
 
 The main frequency and severity targets must refer to the same claim definition. Mixing original counts with mean severity from the smaller cost table would need an unverified representativeness assumption. It is therefore a sensitivity, not the primary estimate.
 
-Part 2 must fit a separate original-count Poisson frequency model and quantify the difference, including by segment. Its product with recorded severity is an **illustrative missing-cost sensitivity**, not a recovered ground-truth ultimate premium. Additional checks should show count-match coverage by segment and a complete-count subset result, with selection bias explicitly noted. Do not impute missing claim costs as if they were known.
+Part 2 fits a separate original-count Poisson frequency model and quantifies the difference, including by segment. Its product with recorded severity is an **illustrative missing-cost sensitivity**, not a recovered ground-truth ultimate premium. Additional checks show count-match coverage by segment and a complete-count subset result, with selection bias explicitly noted. No missing costs are imputed as known values.
 
 Orphan claim-cost records cannot be modelled without risk factors or exposure. They are excluded from the joined target and quantified in the audit. Multiple severity rows for the same policy remain individual claims. Frequency policy IDs must be unique, and joins enforce one-to-one or many-to-one cardinality.
 
@@ -45,11 +45,15 @@ Training fits parameters; validation selects preprocessing and hyperparameters, 
 
 No customer ID or time fields are available. A policy holdout can still share an unidentified customer or repeated risk across splits, and cannot prove future robustness. Do not call it out-of-time validation.
 
-## Models planned for Parts 2–3
+## Models implemented in Part 2 and planned for Part 3
 
-Frequency baseline: Poisson GLM with log link, `E[n_i|x_i,e_i] = e_i * exp(x_i beta)`. This can be fitted with a log-exposure offset or its unpenalised rate-target/exposure-weighted equivalent. Document the implementation and regularisation; adding a penalty changes comparisons if weights are rescaled.
+Frequency baseline: Poisson GLM with log link, `E[n_i|x_i,e_i] = e_i * exp(x_i beta)`. The implementation uses scikit-learn's `PoissonRegressor(alpha=0)` on annual rate with exposure weights, equivalent to unpenalised count-target likelihood with a log-exposure offset. Tests compare it independently against a count/offset objective optimised using SciPy. Adding a penalty would change comparisons if weights are rescaled.
 
-Severity baseline: Gamma GLM with log link on individual positive claim costs. Each observed claim has weight one; do not weight severity by policy exposure. A policy-average severity implementation would instead use recorded claim count weights, so the basis must be documented.
+Severity baseline: scikit-learn `GammaRegressor(alpha=0)` with log link on individual positive claim costs. Each observed claim has weight one. A policy-average severity implementation would instead use recorded claim count weights. Frequency's training intercept score balances counts; Gamma's log-link intercept score balances the mean relative residual `actual/predicted - 1`, so aggregate severity/pure-premium totals need not balance exactly. No calibration multiplier is applied in Part 2.
+
+The shared one-hot encoder learns categories from training policies only, drops the explicit reference levels in `configs/glm.json`, and rejects unseen categories. All six models use Newton–Cholesky, tolerance 1e-8, maximum 1,000 iterations and two compute threads. Convergence warnings halt training. Main fits have 58 parameters including intercept and full-rank Fisher information. The sensitivity models are original-count frequency, count-matched subset frequency/severity, and claim severity winsorised at the training-only 99th percentile. Main outcomes remain uncapped.
+
+Implementation references: [PoissonRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.PoissonRegressor.html) and [GammaRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.GammaRegressor.html). Current verified package versions are pinned in `requirements.lock.txt` and saved with the training metadata.
 
 Annual pure premium: `lambda_hat_i * severity_hat_i`. This is a frequency–severity approximation to recorded loss cost. Dependence through policy characteristics and unobserved factors must be discussed. It excludes loss development, inflation and commercial loadings.
 
@@ -70,6 +74,10 @@ Compare interpretability, fit, calibration, stability, computation, monitoring e
 - Permutation importance/partial dependence for boosting, with correlated-feature limitations. Explain policy examples and where models materially disagree.
 
 ## Decision gates
+
+Part 2 evaluates train/validation only. It publishes decile/segment A/E, volume/coverage screens, training Pearson dispersion, residual bins, Fisher leverage and a dispersion-scaled Cook-like proxy. The proxy is approximate, not an exact leave-one-out refit. Fixed-prediction 250-replicate policy bootstrap intervals cover portfolio validation calibration, with repeat claims kept together through policy totals. They do not cover fitted-parameter uncertainty or missing claims. The `<100 recorded claims` segment flag is a simple screening rule, not formal credibility. Gini, lift uncertainty, paired model comparisons and final test results remain Part 3 requirements.
+
+Residual checks include fitted observed-period intensity and validation exposure bands. Exposure is used in likelihood/evaluation, never as a rating predictor. Aggregate validation pure-premium A/E is approximately 0.996, but age/region discrepancies and the wide bootstrap interval remain material. Part 2's business recommendation is to retain the GLM benchmark for challenger evaluation rather than deploy rates.
 
 Proceed to Part 2 when source hashes, cardinality, targets and splits reconcile. Proceed to commercial recommendations only after the model comparison, missing-cost sensitivity and tail uncertainty are documented. Promote a challenger only if its validation/test benefit is credible, calibration and material segment behaviour are acceptable, and explainability/monitoring costs are justified.
 

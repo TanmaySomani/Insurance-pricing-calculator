@@ -6,15 +6,17 @@ The project is delivered in five bounded parts, each ending with a tested, docum
 
 Public-source research, OpenML snapshots and checksums, policy/claim join audit, exposure rules, target reconciliation, fixed feature engineering, deterministic splits, regression checks, reproducible commands, CI definition and GitHub-ready documentation.
 
-Exit evidence: a full local preparation run on the pinned data; policy count and costs reconcile to linked claim records; tests pass. No fitted model, dashboard, lift result or profit claim exists yet.
+Exit evidence: a full local preparation run on the pinned data; policy count and costs reconcile to linked claim records; tests pass. Part 1 established the foundation; fitted GLMs were added in Part 2.
 
-## Part 2 — Interpretable pricing baseline (next)
+## Part 2 — Interpretable pricing baseline (complete)
 
 Implement Poisson frequency and Gamma severity GLMs, annual pure-premium multiplication and intercept-only benchmarks. Fit preprocessing only on train. Make source-count frequency a separately labelled sensitivity. Export model artefacts, coefficient relativities, validation predictions, calibration, dispersion and residual diagnostics. Keep uncapped recorded costs as the main target; quantify tail sensitivity without tuning on test.
 
 Exit evidence: frozen feature/target definitions, converged fits, positive finite predictions, exposure-aware comparisons, aggregate and segment A/E, source-count versus recorded-count explanation, independently checked predictions and repeatable training commands.
 
-## Part 3 — Boosting and model selection
+Delivered: six converged fits, train/validation artefacts and metadata, intercept comparison, reference-factor tables, deciles/segment diagnostics, portfolio policy-bootstrap calibration intervals, source-count/complete-count/p99-cap sensitivities, residuals/Fisher influence checks, four figure pairs and 32 passing tests. The final test has not been scored. See `reports/glm/GLM_REPORT.md`.
+
+## Part 3 — Boosting and model selection (next)
 
 Train a frequency/severity boosting challenger on identical populations and splits; document a small validation-only tuning search. Compare deviance, exposure-weighted lift, raw/normalised Gini, decile A/E and relevant segment calibration. Include policy bootstrap uncertainty and large-loss sensitivity. Freeze both candidates before final test reporting. Summarise interpretability, governance effort, stability, computational cost and measured lift.
 
