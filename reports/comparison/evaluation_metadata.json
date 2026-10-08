@@ -1,0 +1,25 @@
+{
+  "selection_sha256": "dd29613918c0d914799c33abb29686f492ee4cea163bcf175fb2132ef8205947",
+  "model_selection_changed_after_test": false,
+  "default_model": "boost",
+  "evaluated_partitions": [
+    "validation",
+    "test"
+  ],
+  "bootstrap": "Fixed predictions and bins; paired fixed-size policy samples, percentile 95% intervals",
+  "code_sha256": {
+    "comparison": "5758ad86bed0b833507187b31d4df14c365ef1472e0287309ae8dbe3400b15c9",
+    "ranking": "5b67630f59538a746162fa5b6e16c7186f346849befa3e29080899b8286cfb94",
+    "boosting": "198d2074d8e777b00d599236946d809cfd5bcce97b51fe73f096e4f1a0fa2f35"
+  },
+  "versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "pyarrow": "25.0.1",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "joblib": "1.6.0",
+    "threadpoolctl": "3.7.0",
+    "matplotlib": "3.11.2"
+  }
+}

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "insurance-pricing-calculator"
-version = "0.2.0"
+version = "0.3.0"
 description = "Reproducible motor insurance pricing and commercial scenario analysis"
 requires-python = ">=3.12,<3.15"
 dependencies = [

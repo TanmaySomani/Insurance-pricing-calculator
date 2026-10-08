@@ -1,0 +1,31 @@
+{
+  "seed": 20261008,
+  "threads": 2,
+  "learning_rate": 0.05,
+  "max_bins": 128,
+  "l2_regularization": 10.0,
+  "early_stopping": false,
+  "calibration": "none",
+  "tweedie_power": 1.5,
+  "bootstrap_replicates": 250,
+  "severity_cap_quantile": 0.99,
+  "frequency_candidates": [
+    {"max_iter": 100, "max_leaf_nodes": 7, "min_samples_leaf": 200},
+    {"max_iter": 150, "max_leaf_nodes": 7, "min_samples_leaf": 200},
+    {"max_iter": 150, "max_leaf_nodes": 15, "min_samples_leaf": 200}
+  ],
+  "severity_candidates": [
+    {"max_iter": 75, "max_leaf_nodes": 3, "min_samples_leaf": 100},
+    {"max_iter": 100, "max_leaf_nodes": 7, "min_samples_leaf": 100},
+    {"max_iter": 150, "max_leaf_nodes": 7, "min_samples_leaf": 200}
+  ],
+  "promotion_gate": {
+    "minimum_relative_pure_deviance_gain": 0.01,
+    "minimum_AE": 0.8,
+    "maximum_AE": 1.25,
+    "require_paired_deviance_upper_95_below_zero": true
+  },
+  "permutation_sample_policies": 20000,
+  "permutation_repeats": 3,
+  "partial_dependence_sample_policies": 2000
+}

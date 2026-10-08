@@ -1,6 +1,6 @@
 # Pricing methodology and decision rules
 
-At Part 2, data preparation and the unpenalised Poisson/Gamma baseline are implemented, with train/validation diagnostics and sensitivity checks. Boosting, Gini/model comparison, final test evaluation and commercial simulation remain planned.
+Parts 1–3 implement data preparation, unpenalised Poisson/Gamma GLMs, a boosting challenger, locked validation selection and final-test comparison with paired sampling intervals. Commercial simulation and the live dashboard are next.
 
 ## Business objective and target
 
@@ -45,7 +45,7 @@ Training fits parameters; validation selects preprocessing and hyperparameters, 
 
 No customer ID or time fields are available. A policy holdout can still share an unidentified customer or repeated risk across splits, and cannot prove future robustness. Do not call it out-of-time validation.
 
-## Models implemented in Part 2 and planned for Part 3
+## Models implemented in Parts 2–3
 
 Frequency baseline: Poisson GLM with log link, `E[n_i|x_i,e_i] = e_i * exp(x_i beta)`. The implementation uses scikit-learn's `PoissonRegressor(alpha=0)` on annual rate with exposure weights, equivalent to unpenalised count-target likelihood with a log-exposure offset. Tests compare it independently against a count/offset objective optimised using SciPy. Adding a penalty would change comparisons if weights are rescaled.
 
@@ -57,7 +57,7 @@ Implementation references: [PoissonRegressor](https://scikit-learn.org/stable/mo
 
 Annual pure premium: `lambda_hat_i * severity_hat_i`. This is a frequency–severity approximation to recorded loss cost. Dependence through policy characteristics and unobserved factors must be discussed. It excludes loss development, inflation and commercial loadings.
 
-Challenger: gradient boosting with Poisson frequency loss and positive Gamma severity loss, or a documented appropriate alternative. Use identical target definitions and splits. Frequency retains exposure weights. Hyperparameters are selected on validation data. Training artefacts must record the package versions and selected features. Tune a limited, documented search rather than repeatedly consulting test results.
+Challenger: scikit-learn histogram gradient boosting with Poisson frequency loss (annual rates/exposure weights) and Gamma severity loss (positive individual claims/unit weights), both with log links. Four native categorical and five continuous risk features are encoded using train-only categories; unknowns fail. Three candidates per component are selected independently by validation deviance, with fixed learning rate 0.05, L2=10, bins=128 and no automatic early stopping. No calibration is applied. Selected parameters, all trial scores and checksums are in `reports/comparison/selection.json` and `tuning.csv`. Main severity remains uncapped; source-count and capped-severity sensitivity fits use the chosen hyperparameters without retuning. See [HistGradientBoostingRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html).
 
 Compare interpretability, fit, calibration, stability, computation, monitoring effort, and governance. Greater ranking lift alone is insufficient for promotion. GLM coefficients can explain multiplicative factors; boosting can capture interactions but requires more explanation and stability assessment. Do not claim automatic regulatory acceptance for either model.
 
@@ -75,10 +75,24 @@ Compare interpretability, fit, calibration, stability, computation, monitoring e
 
 ## Decision gates
 
-Part 2 evaluates train/validation only. It publishes decile/segment A/E, volume/coverage screens, training Pearson dispersion, residual bins, Fisher leverage and a dispersion-scaled Cook-like proxy. The proxy is approximate, not an exact leave-one-out refit. Fixed-prediction 250-replicate policy bootstrap intervals cover portfolio validation calibration, with repeat claims kept together through policy totals. They do not cover fitted-parameter uncertainty or missing claims. The `<100 recorded claims` segment flag is a simple screening rule, not formal credibility. Gini, lift uncertainty, paired model comparisons and final test results remain Part 3 requirements.
+Part 2 evaluates train/validation only. It publishes decile/segment A/E, volume/coverage screens, training Pearson dispersion, residual bins, Fisher leverage and a dispersion-scaled Cook-like proxy. The proxy is approximate, not an exact leave-one-out refit. Fixed-prediction 250-replicate policy bootstrap intervals cover portfolio validation calibration, with repeat claims kept together through policy totals. They do not cover fitted-parameter uncertainty or missing claims. The `<100 recorded claims` segment flag is a simple screening rule, not formal credibility. Part 3 now adds Gini, lift uncertainty, paired model comparisons and final test results in `reports/comparison/`.
 
 Residual checks include fitted observed-period intensity and validation exposure bands. Exposure is used in likelihood/evaluation, never as a rating predictor. Aggregate validation pure-premium A/E is approximately 0.996, but age/region discrepancies and the wide bootstrap interval remain material. Part 2's business recommendation is to retain the GLM benchmark for challenger evaluation rather than deploy rates.
 
 Proceed to Part 2 when source hashes, cardinality, targets and splits reconcile. Proceed to commercial recommendations only after the model comparison, missing-cost sensitivity and tail uncertainty are documented. Promote a challenger only if its validation/test benefit is credible, calibration and material segment behaviour are acceptable, and explainability/monitoring costs are justified.
 
 The manager-facing summary must lead with a bounded decision supported by findings, not a claim of achieved savings. Recommended real repricing requires actual current premiums, renewal outcomes, expense economics, claims development and applicable governance review.
+
+## Part 3 selection lock and interpretation
+
+The dashboard-default gate was declared before fitting: at least 1% validation pure-deviance reduction, boosting recorded-cost A/E within 0.80–1.25, and paired validation pure-deviance difference upper 95% bound below zero. It selects a default for illustrative scenarios; it is not production promotion or regulatory approval. Boosting passed with 2.84% validation gain. Hashes of both fitted bundles, feature/model/ranking code, configs and processed tables plus package versions are saved before test access. `evaluate` checks these first and cannot fit any model. Final test gives a 3.24% pure-deviance gain; the default remains unchanged. No post-test calibration or train+validation refit occurred.
+
+Gini uses all tie-group knots for integration; plotted concentration curves show a downsampled 201-grid representation only. Deciles assign whole tied-score groups by their cumulative-exposure midpoint; ordering within ties never uses outcomes. The highest-bin lift is observed cost per exposure divided by the whole portfolio cost per exposure, rather than top/bottom lift. Intercept models can have no decile 10. Undefined zero-cost or zero-oracle Gini cases are exported as missing.
+
+A fixed-size policy bootstrap samples with replacement 250 times, using the same multiplicities for GLM and boosting. Individual Gamma-deviance contributions are grouped by policy first, then weighted and divided by sampled recorded claim count. Frequency and pure-premium deviance divide by sampled exposure. Gini ordering stays fixed and its oracle denominator is recomputed under sampled weights; decile membership stays fixed. Point estimates, percentile bounds, valid replicates and paired differences are exported. Segment/decile A/E intervals use separate shared policy draws for the same two models. These intervals omit refitting, tuning, missing-cost uncertainty, drift and any unidentified shared customer; they do not make the data complete or the validation search unbiased.
+
+For tail diagnostics, holdout claim costs capped at the training p99 are aggregated by policy, with main predictions fixed. This is distinct from fitting a capped-severity sensitivity and evaluating it against raw costs. Excluding the largest-cost policy is a post-freeze diagnostic, never a test selection rule. Source-count products remain labelled as illustrative missing-cost sensitivities. Changing evaluated outcomes changes the estimand, so deviance levels from capped and raw outcomes are not directly comparable as competing full-cost fit scores.
+
+Permutation importance uses 20,000 seeded validation policies and three shuffles per input; shuffle SD is not a confidence interval or causal evidence. Age response averages predictions on 2,000 validation risks with driver age changed and GLM features regenerated. Six fixed hypothetical profiles illustrate GLM/boosting disagreement with no source IDs or outcome-based selection. Correlation, implausible combinations and sparse inputs limit all these explanations; monotonicity is not imposed.
+
+Final-test paired intervals support pure-deviance and raw-Gini improvement but include zero for top-decile lift and severity-deviance differences. Age 75+ calibration reverses between validation and test; single-segment point A/E is not a defensible rate-change multiplier. GLM stays the transparent benchmark and boosting the illustrative dashboard default. Before any genuine repricing, obtain actual premiums, renewal outcomes, developed claims and expense economics, and perform temporal/customer, fairness and jurisdiction-specific governance review.

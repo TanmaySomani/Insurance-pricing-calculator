@@ -1,0 +1,28 @@
+{
+  "package_version": "0.3.0",
+  "python": "3.14.7",
+  "local_tests_passed": 45,
+  "installed_cli_evaluation_completed": true,
+  "repeated_evaluation_same_bytes": true,
+  "checked_sha256": {
+    "reports/comparison/tail_sensitivities.csv": "44876c062964205979a9de68ee579fc213cf422e7bdaaae99de70487b7618f25",
+    "reports/comparison/segments.csv": "984a8c8af49f2a9f310fe61a71b979efb276353b85ee0823e19f088eed6718b9",
+    "reports/comparison/paired_intervals.csv": "eeaa977016da0e0a8530c174491cea91c021ff4c6c0caa489e44a242a7d2efde",
+    "reports/comparison/permutation_importance.csv": "989bc5c69380271fa7f49ca73c628e5759fce3c542e9879a5ac6cf2e9c8dbda3",
+    "reports/comparison/deciles.csv": "56e94c15f2c20c22b29ffdfc3b980288a9800f206d6c5e285ac7c15fd302a054",
+    "reports/comparison/selection_validation_metrics.csv": "e690e80b13f1bba1003321603a471a173462049f502a9c9b973e7a7d0b30b9de",
+    "reports/comparison/metrics.csv": "9309b134ef172c91c49e5ac080db8f113ed7f7eabb9d78bb9b5a4e44deb1f61c",
+    "reports/comparison/driver_age_partial_dependence.csv": "dfc1e8b8c59e8e94981a9a4f63c5a1891c7795db7c81948b5405ef75a1026160",
+    "reports/comparison/selection_validation_intervals.csv": "2eaa7fc7db9518830c72ba5511f5d258b4a10b9d2b6b0f7dc49bc0a770e883be",
+    "reports/comparison/concentration_curves.csv": "32e10bdebcfcb3980ae4758f7719e533a2bf5e3ada6128ec339467ad0abe613d",
+    "reports/comparison/selection.json": "dd29613918c0d914799c33abb29686f492ee4cea163bcf175fb2132ef8205947",
+    "artifacts/glm/bundle.joblib": "d522e47661aa671cd45f21a8a8a012f7918bda39e8eefa2599702cfdb1bbda64",
+    "artifacts/boost/bundle.joblib": "d1b804e5e783d9ddbdb86f0ed5f0b808674567acc73e3426d4a1ed7076c59aea"
+  },
+  "excluded_from_byte_comparison": [
+    "fit/prediction timings",
+    "PDF creation metadata"
+  ],
+  "model_refit_after_test": false,
+  "remote_ci_verified": false
+}

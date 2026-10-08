@@ -2,9 +2,9 @@
 
 **Business question:** How should a motor insurer differentiate prices by risk while balancing expected claims, retention, and underwriting contribution?
 
-**Current conclusion:** Keep the Poisson/Gamma GLM as an interpretable benchmark and proceed to a boosting comparison. On validation it reduces pure-premium deviance by 6.7% versus an intercept-only benchmark and predicts EUR 166.56 per policy-year against EUR 165.91 recorded. Missing claim costs and large-loss uncertainty prevent treating this as a deployable rate recommendation.
+**Current conclusion:** Use boosting as the default for the illustrative dashboard and retain the Poisson/Gamma GLM as an explainable benchmark. On the frozen final test, boosting reduces recorded pure-premium deviance by 3.2% and raises raw exposure Gini from 0.359 to 0.423. Paired sampling intervals support those gains; top-decile lift improvement remains uncertain. Missing claim costs and large-loss uncertainty prevent a live tariff recommendation.
 
-This is a staged portfolio case study using French motor third-party liability data. The GLM baseline is implemented; the boosting comparison, manager-facing dashboard and final two-page decision brief remain planned.
+This is a staged portfolio case study using French motor third-party liability data. Data, GLMs and the boosting comparison are implemented. The manager-facing dashboard and final two-page decision brief are the next deliverables.
 
 ## Delivery checkpoints
 
@@ -12,8 +12,8 @@ This is a staged portfolio case study using French motor third-party liability d
 |---|---|---|
 | 1 | Public data, provenance, quality audit, engineered features, frozen splits | Complete |
 | 2 | Poisson frequency + Gamma severity GLMs, pure premium, diagnostics | Complete |
-| 3 | Gradient boosting, lift/Gini/decile validation, model recommendation | Next |
-| 4 | Commercial simulation and live dashboard with editable assumptions | Planned |
+| 3 | Gradient boosting, lift/Gini/decile validation, model recommendation | Complete |
+| 4 | Commercial simulation and live dashboard with editable assumptions | Next |
 | 5 | Client presentation, two-page summary, deployment and final review | Planned |
 | Optional | Australian market risk context with separately sourced public data | After core delivery |
 
@@ -89,7 +89,7 @@ insurance-pricing train-glm
 PYTHONPATH=src .venv/bin/python -m insurance_pricing.cli train-glm
 ```
 
-The main models are unpenalised log-link Poisson/Gamma GLMs with 58 parameters each, including intercept. Frequency uses annual claim rates with exposure weights; severity uses individual positive claims with unit weights. Train-only category encoding has explicit references and rejects unseen categories. The final test partition has not been scored.
+The main models are unpenalised log-link Poisson/Gamma GLMs with 58 parameters each, including intercept. Frequency uses annual claim rates with exposure weights; severity uses individual positive claims with unit weights. Train-only category encoding has explicit references and rejects unseen categories. Part 2 fitted and evaluated train/validation only; the frozen final test comparison was added in Part 3.
 
 | Validation measure | Intercept | GLM |
 |---|---:|---:|
@@ -106,7 +106,42 @@ See [GLM_REPORT.md](reports/glm/GLM_REPORT.md) for deciles, segment coverage, co
 
 Training saves the reusable model bundle, policy/claim predictions, and row-level residuals under local `artifacts/glm/`. Prediction columns use the `pred_` prefix to preserve all observed fields. Source/config/code/processed-data hashes, package versions and convergence details are in [training_metadata.json](reports/glm/training_metadata.json). Aggregate reports and PNG/vector PDF charts are committed. Regenerate figures with `PYTHONPATH=src .venv/bin/python figures/gen_fig_glm.py`.
 
-Part 2 was verified by full training on the real snapshot and **32 passing tests**, including an independent count/offset likelihood comparison, score-equation checks, model serialization, holdout leakage guards and prediction export integrity. Gini, model-comparison lift uncertainty and final test results belong to Part 3.
+Part 2 was verified by full training on the real snapshot and **32 passing tests**, including an independent count/offset likelihood comparison, score-equation checks, model serialization, holdout leakage guards and prediction export integrity. Part 3 adds Gini, model-comparison lift uncertainty and final test results below.
+
+## Part 3: boosting comparison and frozen final test
+
+From a fresh checkout, run the stages in order after setup:
+
+```bash
+insurance-pricing prepare
+insurance-pricing train-glm
+insurance-pricing train-boost
+insurance-pricing evaluate
+python -m pytest -q
+```
+
+Once bundles exist, `insurance-pricing evaluate` verifies their selection/data/config/code/version checksums before scoring and can regenerate evidence without refitting. Do not change the search after inspecting the published test results. Rebuilding in a different runtime requires rebuilding the earlier stages; local bundles are not distributed or guaranteed portable across library versions.
+
+Histogram boosting uses Poisson frequency loss with exposure weights and Gamma severity loss on individual claims. A predeclared three-candidate search for each component selects on validation only. Continuous age/power/bonus features complement native categorical area/brand/fuel/region handling. No outcome or exposure is a rating predictor; no calibration multiplier is applied. The illustrative dashboard-default decision is saved before test access in [selection.json](reports/comparison/selection.json).
+
+| Final-test measure | GLM | Boosting |
+|---|---:|---:|
+| Pure-premium Tweedie p=1.5 deviance / exposure | 76.353 | 73.877 |
+| Raw exposure concentration Gini | 0.359 | 0.423 |
+| Normalised Gini | 0.365 | 0.429 |
+| Top-decile observed cost / portfolio cost rate | 2.681 | 3.453 |
+| Recorded cost actual / expected | 0.886 | 0.961 |
+| Expected recorded cost / policy-year, EUR | 165.98 | 153.08 |
+
+Actual final-test recorded cost is EUR 147.10/year on 135,246 policies and 5,270 linked claims. Paired 250-replicate policy-bootstrap intervals give boosting-minus-GLM pure deviance **−2.476 [−5.743, −0.391]**, raw Gini **+0.064 [0.019, 0.104]**, and top-decile lift **+0.772 [−0.376, 2.396]**. Predictions and bins stay fixed; intervals exclude parameter/tuning uncertainty, missing costs and drift. Higher A/E alone is not a quality gain; closeness to one matters.
+
+The model recommendation is bounded: proceed with boosting for commercial scenario exploration and keep GLM available. Investigate segment differences before repricing. The GLM's 75+ A/E changes from about 1.67 on validation to 0.70 on test, showing why an isolated segment ratio is a poor rate-change rule. The 55–64 group remains below one in both holdouts, but a real rate decrease requires current premium and retention evidence.
+
+See [MODEL_COMPARISON.md](reports/comparison/MODEL_COMPARISON.md) for the tuning search, paired uncertainty, decile/segment intervals, capped-outcome and largest-policy sensitivities, model response examples, interpretability and governance trade-offs.
+
+![Paired final-test comparison](reports/comparison/figures/paired_uncertainty.png)
+
+Part 3 saves reusable boosting models under local `artifacts/boost/` and holdout predictions under `artifacts/comparison/`. Aggregate reports and five PNG/vector PDF figure pairs are committed. Regenerate figures with `PYTHONPATH=src .venv/bin/python figures/gen_fig_comparison.py`. Package version 0.3.0 is verified with **45 passing local tests**, including independent exposure-weighted Gini arithmetic, paired identical-model bootstrap checks, correct Poisson exposure weights, holdout rejection and checksum-tampering detection. Repeated frozen evaluation reproduces numerical CSV evidence and leaves both model bundles and the selection record unchanged. Remote GitHub CI status must be verified separately.
 
 ## Judgement and limitations
 
@@ -131,4 +166,4 @@ artifacts/               Local model, prediction and residual artifacts (not com
 figures/                 Figure regeneration scripts
 ```
 
-Code is MIT licensed; source-data licensing is separately reported by OpenML. Fitted GLM validation results are available; simulated profits and Australian conclusions have not been claimed.
+Code is MIT licensed; source-data licensing is separately reported by OpenML. GLM and boosting holdout results are available; simulated profits and Australian conclusions have not been claimed.

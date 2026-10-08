@@ -14,15 +14,17 @@ Implement Poisson frequency and Gamma severity GLMs, annual pure-premium multipl
 
 Exit evidence: frozen feature/target definitions, converged fits, positive finite predictions, exposure-aware comparisons, aggregate and segment A/E, source-count versus recorded-count explanation, independently checked predictions and repeatable training commands.
 
-Delivered: six converged fits, train/validation artefacts and metadata, intercept comparison, reference-factor tables, deciles/segment diagnostics, portfolio policy-bootstrap calibration intervals, source-count/complete-count/p99-cap sensitivities, residuals/Fisher influence checks, four figure pairs and 32 passing tests. The final test has not been scored. See `reports/glm/GLM_REPORT.md`.
+Delivered: six converged fits, train/validation artefacts and metadata, intercept comparison, reference-factor tables, deciles/segment diagnostics, portfolio policy-bootstrap calibration intervals, source-count/complete-count/p99-cap sensitivities, residuals/Fisher influence checks, four figure pairs and 32 passing tests. Part 2 did not score the final test; Part 3 added the frozen comparison. See `reports/glm/GLM_REPORT.md`.
 
-## Part 3 — Boosting and model selection (next)
+## Part 3 — Boosting and model selection (complete)
 
 Train a frequency/severity boosting challenger on identical populations and splits; document a small validation-only tuning search. Compare deviance, exposure-weighted lift, raw/normalised Gini, decile A/E and relevant segment calibration. Include policy bootstrap uncertainty and large-loss sensitivity. Freeze both candidates before final test reporting. Summarise interpretability, governance effort, stability, computational cost and measured lift.
 
 Exit evidence: reproducible comparison tables/charts, correctly handled exposure/ties, model/version metadata, test results and a supported model-use recommendation. No promise that boosting must win.
 
-## Part 4 — Commercial engine and dashboard
+Delivered: validation-only Poisson/Gamma histogram boosting search, locked model selection, identical final-test evaluation, paired policy-bootstrap deviance/Gini/lift intervals, decile/segment calibration uncertainty, large-loss/missing-cost sensitivities, explanation diagnostics, fixed hypothetical profiles, five figure pairs and 45 passing local tests. Boosting is the illustrative dashboard default, with GLM retained as benchmark. See `reports/comparison/MODEL_COMPARISON.md`.
+
+## Part 4 — Commercial engine and dashboard (next)
 
 Implement and verify the numerical contract in `DASHBOARD_SPEC.md`. Build Streamlit pages with pre-trained artefacts, live controls, editable segment rows, saved scenarios and exports. Validate assumptions, arithmetic, zero-change identities and interaction paths. Show which segment rate investigations remain reasonable under conservative elasticity/claims assumptions.
 

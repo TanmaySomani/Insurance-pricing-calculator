@@ -1,0 +1,171 @@
+{
+  "selection_population": "validation",
+  "test_read_during_selection": false,
+  "config": {
+    "seed": 20261008,
+    "threads": 2,
+    "learning_rate": 0.05,
+    "max_bins": 128,
+    "l2_regularization": 10.0,
+    "early_stopping": false,
+    "calibration": "none",
+    "tweedie_power": 1.5,
+    "bootstrap_replicates": 250,
+    "severity_cap_quantile": 0.99,
+    "frequency_candidates": [
+      {
+        "max_iter": 100,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 200
+      },
+      {
+        "max_iter": 150,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 200
+      },
+      {
+        "max_iter": 150,
+        "max_leaf_nodes": 15,
+        "min_samples_leaf": 200
+      }
+    ],
+    "severity_candidates": [
+      {
+        "max_iter": 75,
+        "max_leaf_nodes": 3,
+        "min_samples_leaf": 100
+      },
+      {
+        "max_iter": 100,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 100
+      },
+      {
+        "max_iter": 150,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 200
+      }
+    ],
+    "promotion_gate": {
+      "minimum_relative_pure_deviance_gain": 0.01,
+      "minimum_AE": 0.8,
+      "maximum_AE": 1.25,
+      "require_paired_deviance_upper_95_below_zero": true
+    },
+    "permutation_sample_policies": 20000,
+    "permutation_repeats": 3,
+    "partial_dependence_sample_policies": 2000
+  },
+  "config_sha256": "637a346f03613e6842833692605bcc78ff0d957cb80650dd530a848401d3c82a",
+  "selected_parameters": {
+    "frequency": {
+      "max_iter": 150,
+      "max_leaf_nodes": 15,
+      "min_samples_leaf": 200
+    },
+    "severity": {
+      "max_iter": 75,
+      "max_leaf_nodes": 3,
+      "min_samples_leaf": 100
+    }
+  },
+  "features": [
+    "Area",
+    "VehBrand",
+    "VehGas",
+    "Region",
+    "VehPower",
+    "VehAge",
+    "DrivAge",
+    "BonusMalus",
+    "log_density"
+  ],
+  "category_levels": {
+    "Area": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "VehBrand": [
+      "B1",
+      "B10",
+      "B11",
+      "B12",
+      "B13",
+      "B14",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6"
+    ],
+    "VehGas": [
+      "Diesel",
+      "Regular"
+    ],
+    "Region": [
+      "R11",
+      "R21",
+      "R22",
+      "R23",
+      "R24",
+      "R25",
+      "R26",
+      "R31",
+      "R41",
+      "R42",
+      "R43",
+      "R52",
+      "R53",
+      "R54",
+      "R72",
+      "R73",
+      "R74",
+      "R82",
+      "R83",
+      "R91",
+      "R93",
+      "R94"
+    ]
+  },
+  "calibration": "none",
+  "decision": {
+    "default_model": "boost",
+    "relative_validation_deviance_gain": 0.02839568479296173,
+    "checks": {
+      "minimum_validation_gain": true,
+      "validation_calibration_corridor": true,
+      "paired_validation_gain_clear": true
+    },
+    "scope": "Default for the illustrative dashboard only; not live-rate approval"
+  },
+  "glm_sha256": "d522e47661aa671cd45f21a8a8a012f7918bda39e8eefa2599702cfdb1bbda64",
+  "boost_sha256": "d1b804e5e783d9ddbdb86f0ed5f0b808674567acc73e3426d4a1ed7076c59aea",
+  "processed_hashes": {
+    "policies": "27041ae9d6e213e4994034801fda29015fcc891db8bb40dcdd3fdbedb9b8c094",
+    "claims": "a7080dfb3a2751d0e429092a2e319ba8ef1ba8890d8e621201e98d0bd4bb07c1"
+  },
+  "data_config_sha256": "877249d3e1c2b4cd11f804c1b6d8753356272ba3d58a1abe64be4d013a6f1012",
+  "code_sha256": {
+    "data": "3f3cff0b672d82d15cc3d09d1eaeda52b0a0498294a0c3244d657048c6c36747",
+    "models": "3f15d50339e48d9aae02074b68067ec2319be8882748f6dd9766d51fc904c6f7",
+    "boosting": "198d2074d8e777b00d599236946d809cfd5bcce97b51fe73f096e4f1a0fa2f35",
+    "ranking": "5b67630f59538a746162fa5b6e16c7186f346849befa3e29080899b8286cfb94"
+  },
+  "versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "pyarrow": "25.0.1",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "joblib": "1.6.0",
+    "threadpoolctl": "3.7.0",
+    "matplotlib": "3.11.2"
+  },
+  "training_severity_cap_eur": 16792.947199999995,
+  "training_policies": 407081,
+  "training_claims": 15945
+}
