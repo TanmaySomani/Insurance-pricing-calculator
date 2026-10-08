@@ -4,13 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "insurance-pricing-calculator"
-version = "0.3.0"
+version = "0.4.0"
 description = "Reproducible motor insurance pricing and commercial scenario analysis"
 requires-python = ">=3.12,<3.15"
 dependencies = [
   "numpy>=2.2,<3", "pandas>=2.2,<4", "pyarrow>=19,<26",
   "scikit-learn>=1.6,<2", "scipy>=1.14,<2", "joblib>=1.4,<2",
-  "threadpoolctl>=3.5,<4", "matplotlib>=3.9,<4"
+  "threadpoolctl>=3.5,<4", "matplotlib>=3.9,<4",
+  "streamlit>=1.65,<2", "plotly>=6.9,<7"
 ]
 
 [project.optional-dependencies]

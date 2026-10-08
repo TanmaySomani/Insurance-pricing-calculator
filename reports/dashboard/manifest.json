@@ -1,0 +1,125 @@
+{
+  "selection_sha256": "dd29613918c0d914799c33abb29686f492ee4cea163bcf175fb2132ef8205947",
+  "engine_sha256": "e54e0e1395d8792223c8ec5df049ceff390c69bba87b2e1132f02b2e1bc66d66",
+  "engine_version": "1",
+  "tables_sha256": {
+    "reports/dashboard/cohort.csv": "79482cc9f6b0189e8611bbb2601f6337708eedd9a3cad0916271e6846e37d016",
+    "reports/dashboard/risk_spec.json": "4dc3bc4f266934f5fd99087e21da3c762ea6f2e20b68ec49052710df46f37852",
+    "reports/dashboard/risk_support.csv": "09c60fa80f8725f598f4e923f77763f999342bcffdac54482a3d4853937e69c3",
+    "reports/comparison/concentration_curves.csv": "32e10bdebcfcb3980ae4758f7719e533a2bf5e3ada6128ec339467ad0abe613d",
+    "reports/comparison/deciles.csv": "56e94c15f2c20c22b29ffdfc3b980288a9800f206d6c5e285ac7c15fd302a054",
+    "reports/comparison/driver_age_partial_dependence.csv": "dfc1e8b8c59e8e94981a9a4f63c5a1891c7795db7c81948b5405ef75a1026160",
+    "reports/comparison/metrics.csv": "9309b134ef172c91c49e5ac080db8f113ed7f7eabb9d78bb9b5a4e44deb1f61c",
+    "reports/comparison/paired_intervals.csv": "eeaa977016da0e0a8530c174491cea91c021ff4c6c0caa489e44a242a7d2efde",
+    "reports/comparison/permutation_importance.csv": "989bc5c69380271fa7f49ca73c628e5759fce3c542e9879a5ac6cf2e9c8dbda3",
+    "reports/comparison/prediction_timings.csv": "ebb2c2dd3ad387896caa815d59e727cda0a77d7f8f1c9ea9767e809ab41579d5",
+    "reports/comparison/profile_examples.csv": "2ddc9262f69e15adc0d200be56995eca92da51f643fb422947ba4da332c4d911",
+    "reports/comparison/segments.csv": "984a8c8af49f2a9f310fe61a71b979efb276353b85ee0823e19f088eed6718b9",
+    "reports/comparison/selection_validation_intervals.csv": "2eaa7fc7db9518830c72ba5511f5d258b4a10b9d2b6b0f7dc49bc0a770e883be",
+    "reports/comparison/selection_validation_metrics.csv": "e690e80b13f1bba1003321603a471a173462049f502a9c9b973e7a7d0b30b9de",
+    "reports/comparison/tail_sensitivities.csv": "44876c062964205979a9de68ee579fc213cf422e7bdaaae99de70487b7618f25",
+    "reports/comparison/tuning.csv": "7f85c32bd74669c73dd23278df4fd97873084a0ba154f87da4acbdee0ee1d089"
+  },
+  "fingerprint": "5b7f4832d54773ce257b8cd2b61f10bb4755d653304f572f059812db0b9fae91",
+  "catalog": {
+    "driver_age_band": [
+      "18\u201324",
+      "25\u201334",
+      "35\u201344",
+      "45\u201354",
+      "55\u201364",
+      "65\u201374",
+      "75+"
+    ],
+    "Region": [
+      "R11",
+      "R21",
+      "R22",
+      "R23",
+      "R24",
+      "R25",
+      "R26",
+      "R31",
+      "R41",
+      "R42",
+      "R43",
+      "R52",
+      "R53",
+      "R54",
+      "R72",
+      "R73",
+      "R74",
+      "R82",
+      "R83",
+      "R91",
+      "R93",
+      "R94"
+    ],
+    "VehGas": [
+      "Diesel",
+      "Regular"
+    ],
+    "VehBrand": [
+      "B1",
+      "B10",
+      "B11",
+      "B12",
+      "B13",
+      "B14",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6"
+    ],
+    "Area": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "vehicle_age_band": [
+      "11\u201320",
+      "1\u20135",
+      "21+",
+      "6\u201310",
+      "New"
+    ],
+    "vehicle_power_band": [
+      "10",
+      "11",
+      "12",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "bonus_malus_band": [
+      "101+",
+      "50",
+      "51\u201375",
+      "76\u2013100"
+    ]
+  },
+  "models": {
+    "glm": "d522e47661aa671cd45f21a8a8a012f7918bda39e8eefa2599702cfdb1bbda64",
+    "boost": "d1b804e5e783d9ddbdb86f0ed5f0b808674567acc73e3426d4a1ed7076c59aea"
+  },
+  "default_model": "boost",
+  "processed_hashes": {
+    "policies": "27041ae9d6e213e4994034801fda29015fcc891db8bb40dcdd3fdbedb9b8c094",
+    "claims": "a7080dfb3a2751d0e429092a2e319ba8ef1ba8890d8e621201e98d0bd4bb07c1"
+  },
+  "renewal_weights": "One annual opportunity per policy; historical exposure does not weight the renewal forecast",
+  "aggregation": "Exact for shared segment retention/rate/stress and affine baseline premium; no rounding or sampling",
+  "versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "streamlit": "1.65.0",
+    "plotly": "6.9.0"
+  }
+}

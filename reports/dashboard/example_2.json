@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "engine_version": "1",
+  "fingerprint": "5b7f4832d54773ce257b8cd2b61f10bb4755d653304f572f059812db0b9fae91",
+  "inputs": {
+    "name": "Plus 5 percent",
+    "model": "boost",
+    "premium_basis": "glm",
+    "scope": "test",
+    "segment_field": "driver_age_band",
+    "included_segments": null,
+    "baseline_mode": "same_stress",
+    "assumptions": {
+      "global_change": 0.05,
+      "retention": 0.85,
+      "elasticity": 1.2,
+      "claims_inflation": 0,
+      "variable_expense": 0.25,
+      "fixed_expense": 30.0,
+      "margin": 0.1,
+      "minimum_change": -0.2,
+      "maximum_change": 0.2
+    },
+    "rules": [],
+    "stresses": []
+  },
+  "outputs": {
+    "baseline": {
+      "retained": 114959.1,
+      "premium": 37192955.19939718,
+      "claims": 19177059.28061167,
+      "expenses": 12747011.799849294,
+      "contribution": 5268884.118936211,
+      "loss_ratio": 0.5156099905963507,
+      "combined_ratio": 0.8583365024185653,
+      "retention": 0.8500000000000001
+    },
+    "scenario": {
+      "retained": 108421.69592915964,
+      "premium": 36831790.117552176,
+      "claims": 18086513.291578896,
+      "expenses": 12460598.407262834,
+      "contribution": 6284678.41871045,
+      "loss_ratio": 0.4910571339012864,
+      "combined_ratio": 0.8293680975414908,
+      "retention": 0.8016628656607933
+    },
+    "unstressed_baseline": {
+      "retained": 114959.1,
+      "premium": 37192955.19939718,
+      "claims": 19177059.28061167,
+      "expenses": 12747011.799849294,
+      "contribution": 5268884.118936211,
+      "loss_ratio": 0.5156099905963507,
+      "combined_ratio": 0.8583365024185653,
+      "retention": 0.8500000000000001
+    }
+  }
+}

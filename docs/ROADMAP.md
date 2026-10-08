@@ -24,13 +24,15 @@ Exit evidence: reproducible comparison tables/charts, correctly handled exposure
 
 Delivered: validation-only Poisson/Gamma histogram boosting search, locked model selection, identical final-test evaluation, paired policy-bootstrap deviance/Gini/lift intervals, decile/segment calibration uncertainty, large-loss/missing-cost sensitivities, explanation diagnostics, fixed hypothetical profiles, five figure pairs and 45 passing local tests. Boosting is the illustrative dashboard default, with GLM retained as benchmark. See `reports/comparison/MODEL_COMPARISON.md`.
 
-## Part 4 — Commercial engine and dashboard (next)
+## Part 4 — Commercial engine and dashboard (complete)
 
 Implement and verify the numerical contract in `DASHBOARD_SPEC.md`. Build Streamlit pages with pre-trained artefacts, live controls, editable segment rows, saved scenarios and exports. Validate assumptions, arithmetic, zero-change identities and interaction paths. Show which segment rate investigations remain reasonable under conservative elasticity/claims assumptions.
 
 Exit evidence: running local dashboard, measured interaction performance, scenario reconciliation and useful manager-facing recommendations with visible limitations. Hosting can be arranged once tested.
 
-## Part 5 — Client handover
+Delivered: independently checked renewal economics, exact segment aggregates, six-page Streamlit/Plotly dashboard, live assumptions, dynamic rule/stress editors, model switch with a fixed price anchor, risk calculator and support screens, JSON/CSV scenarios, sensitivity curve, measured local responsiveness and 72 passing tests. Public hosting remains unconfigured. See `docs/DASHBOARD_USAGE.md` and `reports/dashboard/COMMERCIAL_REPORT.md`.
+
+## Part 5 — Client handover (next)
 
 Create a clean final README, verified two-page PDF written for a nontechnical pricing manager, an example scenario walkthrough and screenshots. Lead with the business question, bounded recommendation, evidence and risks. Include model cards, data provenance, reproducible setup, dashboard instructions and a complete handover checkpoint. Validate document page count/readability and dashboard deployment configuration. Publish verified deliverables to the specified GitHub repository.
 

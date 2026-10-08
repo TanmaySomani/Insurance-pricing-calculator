@@ -4,7 +4,7 @@
 
 **Current conclusion:** Use boosting as the default for the illustrative dashboard and retain the Poisson/Gamma GLM as an explainable benchmark. On the frozen final test, boosting reduces recorded pure-premium deviance by 3.2% and raises raw exposure Gini from 0.359 to 0.423. Paired sampling intervals support those gains; top-decile lift improvement remains uncertain. Missing claim costs and large-loss uncertainty prevent a live tariff recommendation.
 
-This is a staged portfolio case study using French motor third-party liability data. Data, GLMs and the boosting comparison are implemented. The manager-facing dashboard and final two-page decision brief are the next deliverables.
+This is a staged portfolio case study using French motor third-party liability data. Data, GLMs and the boosting comparison are implemented. The live commercial dashboard is implemented. The final two-page manager brief and client handover are next.
 
 ## Delivery checkpoints
 
@@ -13,8 +13,8 @@ This is a staged portfolio case study using French motor third-party liability d
 | 1 | Public data, provenance, quality audit, engineered features, frozen splits | Complete |
 | 2 | Poisson frequency + Gamma severity GLMs, pure premium, diagnostics | Complete |
 | 3 | Gradient boosting, lift/Gini/decile validation, model recommendation | Complete |
-| 4 | Commercial simulation and live dashboard with editable assumptions | Next |
-| 5 | Client presentation, two-page summary, deployment and final review | Planned |
+| 4 | Commercial simulation and live dashboard with editable assumptions | Complete |
+| 5 | Client presentation, two-page summary, deployment and final review | Next |
 | Optional | Australian market risk context with separately sourced public data | After core delivery |
 
 Resume instructions are in [CHECKPOINT.md](CHECKPOINT.md). Each part will finish with updated commands, tests, findings, and the next task. A checkpoint is a deliberate handover point, not a claim that the whole project is finished.
@@ -73,11 +73,22 @@ Outputs:
 - `data/processed/claims.parquet`: one row per matched claim, risk factors, features, inherited partition.
 - [reports/](reports/): provenance, audit, reconciliation and descriptive segment summary. Raw/processed records are excluded from Git; reproducible code and aggregate reports are committed.
 
-## Planned interactive dashboard
+## Live interactive dashboard — Part 4
 
-Python + Streamlit will provide portfolio/model results, segment diagnostics, an individual risk calculator, and commercial scenarios. Changing assumptions will recalculate expected retention, retained policies, premium, claims, loss ratio and underwriting contribution. An editable segment table will support adding rate adjustments and elasticity overrides; scenarios can be saved and compared.
+The Streamlit/Plotly dashboard provides portfolio/model results, segment diagnostics, an individual risk calculator and commercial scenarios. Assumption edits recalculate expected retention, retained policies, premium, claims, scenario loss ratio and underwriting contribution. Add/edit/remove segment adjustments and response overrides; add named stress parameters; save, compare, download and reload scenarios.
 
-Inputs include rate change, baseline retention, elasticity, claims inflation, expense ratio, fixed expense and margin. Model choice will switch between GLM and boosting. New rating variables will require available training data and a validated model refit; adding a dashboard control alone cannot create a learned risk effect. See [DASHBOARD_SPEC.md](docs/DASHBOARD_SPEC.md).
+```bash
+source .venv/bin/activate
+python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8502
+```
+
+Open [localhost:8502](http://127.0.0.1:8502). The scenario and diagnostic pages work from verified aggregate evidence committed to GitHub. The risk calculator additionally needs the local fitted bundles. After the modelling pipeline, run `insurance-pricing prepare-dashboard` to rebuild/version the aggregates without refitting. See [DASHBOARD_USAGE.md](docs/DASHBOARD_USAGE.md) for setup, inputs, row editing, scenario persistence and limits.
+
+The +5% illustrative scenario, at assumed elasticity 1.2, increases contribution by about **EUR 1.02m** while losing about **6,537 retained policies**. At elasticity 6 the contribution change is **−EUR 0.30m**. The recommendation is to investigate a bounded move and measure renewal response before rollout; these are simulated results at synthetic premiums, not achieved savings. Full assumptions and sensitivity are in [COMMERCIAL_REPORT.md](reports/dashboard/COMMERCIAL_REPORT.md).
+
+![Live pricing dashboard](reports/dashboard/screenshots/rate-scenario.jpg)
+
+Inputs include rate change, baseline retention, elasticity, claims inflation, expense ratio, fixed expense and margin. Claims model choice switches between GLM and boosting while the selected baseline price anchor stays fixed for fair comparison. New rating variables will require available training data and a validated model refit; adding a dashboard control alone cannot create a learned risk effect. See [DASHBOARD_SPEC.md](docs/DASHBOARD_SPEC.md).
 
 ## Part 2: interpretable pricing baseline
 
@@ -143,6 +154,8 @@ See [MODEL_COMPARISON.md](reports/comparison/MODEL_COMPARISON.md) for the tuning
 
 Part 3 saves reusable boosting models under local `artifacts/boost/` and holdout predictions under `artifacts/comparison/`. Aggregate reports and five PNG/vector PDF figure pairs are committed. Regenerate figures with `PYTHONPATH=src .venv/bin/python figures/gen_fig_comparison.py`. Package version 0.3.0 is verified with **45 passing local tests**, including independent exposure-weighted Gini arithmetic, paired identical-model bootstrap checks, correct Poisson exposure weights, holdout rejection and checksum-tampering detection. Repeated frozen evaluation reproduces numerical CSV evidence and leaves both model bundles and the selection record unchanged. Remote GitHub CI status must be verified separately.
 
+Part 4 package version 0.4.0 is verified with **72 passing local tests**, exact aggregate versus independent policy-level scenario reconciliation, live JSON upload/reload, and a warm browser KPI update of **0.36 seconds** on the documented local machine. The full warm Python-side rerun p95 was about 0.14 seconds. No model was refitted or selected again. Public hosting and the final manager PDF belong to Part 5.
+
 ## Judgement and limitations
 
 - Historical French liability costs are not current Australian motor or home prices.
@@ -150,7 +163,7 @@ Part 3 saves reusable boosting models under local `artifacts/boost/` and holdout
 - Recorded-cost incompleteness may vary by segment. This uncertainty is central to interpretation.
 - Baseline premiums and elasticity will be explicit assumptions because historical premiums and renewal outcomes are unavailable.
 - An interpretable GLM helps explain rating factors; neither GLMs nor boosting have automatic regulatory approval. Governance, permitted variables, fairness, stability, and documentation must be assessed for the deployment jurisdiction.
-- Final business recommendations will follow model evidence and commercial sensitivity, not just ranking metrics.
+- Business recommendations follow model evidence and commercial sensitivity, with actual premium and renewal evidence required before repricing.
 
 ## Project structure
 
@@ -166,4 +179,4 @@ artifacts/               Local model, prediction and residual artifacts (not com
 figures/                 Figure regeneration scripts
 ```
 
-Code is MIT licensed; source-data licensing is separately reported by OpenML. GLM and boosting holdout results are available; simulated profits and Australian conclusions have not been claimed.
+Code is MIT licensed; source-data licensing is separately reported by OpenML. GLM/boosting holdout evidence and clearly labelled commercial simulations are available; no achieved savings or Australian pricing conclusions are claimed.

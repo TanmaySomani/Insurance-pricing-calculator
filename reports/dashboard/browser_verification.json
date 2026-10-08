@@ -1,0 +1,17 @@
+{
+  "recorded_during": "Part 4 local browser verification, 8 October 2026",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "python": "3.14.7",
+  "fingerprint": "5b7f4832d54773ce257b8cd2b61f10bb4755d653304f572f059812db0b9fae91",
+  "warm_slider_to_visible_kpi_ms": 364,
+  "measurement_scope": "One final-preview warm edit, including CUA automation overhead. Excludes browser startup and approval time; not a host guarantee.",
+  "json_reload_verified": true,
+  "json_file": "example_2.json",
+  "json_sha256": "50d826ad5a0c9cf2962c1f4ca53ffa3ff9b922b080b905fc90f0264140d5d736",
+  "display_verified": {
+    "rate_change_percent": 5,
+    "scenario_name": "Plus 5 percent",
+    "contribution_eur_m": 6.28,
+    "retained_policies": 108422
+  }
+}

@@ -1,10 +1,10 @@
-# Dashboard specification — planned for Part 4
+# Dashboard specification — implemented in Part 4
 
-Purpose: allow a pricing manager to understand risk segmentation and test how pricing assumptions change expected retention, portfolio mix, and underwriting contribution. Every scenario must identify which values are observed, modelled, or assumed. No commercial outputs are implemented in Part 1.
+Purpose: allow a pricing manager to understand risk segmentation and test how pricing assumptions change expected retention, portfolio mix, and underwriting contribution. Every scenario must identify which values are observed, modelled, or assumed. Part 4 implements this contract; usage and verification are in DASHBOARD_USAGE.md.
 
 ## Pages and decisions
 
-| Page | Manager's question | Planned content |
+| Page | Manager's question | Implemented content |
 |---|---|---|
 | Portfolio | What is this book, and how reliable are the data? | Exposure, claims, recorded cost, source completeness, tail concentration, dataset/version labels |
 | Model comparison | Which model supports our pricing decision? | GLM/boosting calibration, lift, Gini with uncertainty, deciles, diagnostics and trade-offs |
@@ -75,3 +75,13 @@ Recommendation text should identify a bounded option and its sensitivity to elas
 - Model/risk calculators cannot use ID, outcome or exposure as a learned rating feature.
 - Empty filters, unseen levels, small claim counts and extrapolated risks show usable states.
 - Commercial outputs clearly distinguish assumptions from observed and modelled values.
+
+## Delivered decisions and evidence
+
+The default annual renewal cohort is the final-test population, with one opportunity per policy; full snapshot and other partitions are available. Defaults are assumptions: retention 85%, elasticity 1.2, claims inflation 0%, variable expense 25%, fixed annual retained-policy expense EUR 30, price margin 10%, combined corridor −20% to +20%. The baseline price anchor defaults to GLM and stays fixed when changing the claims model; a separate explicit selector changes it.
+
+For exact, responsive arithmetic, the engine stores segment sums of annual loss predictions and policy weights. Shared segment response and linear premium construction make these totals equivalent to policy calculations. No historical exposure is applied to the future renewal count. One segmentation field is supported at a time; no cross-field overlapping rules. Added stress parameters are named frequency/severity/loss multipliers.
+
+JSON inputs carry a fingerprint binding source/model selection, input tables and engine version. Invalid imports are rejected and outputs recomputed. Session saves require JSON download for durable storage. The committed aggregates allow scenario/diagnostic pages without local models; the risk calculator needs verified local fitted bundles.
+
+All 72 local tests pass, and an independent 135,246-policy calculation matches the aggregate scenario to relative tolerance 1e-12. Warm Python rerun p95 is about 0.14s; one browser slider-to-visible-KPI update measured 0.36s. Browser JSON reloading was verified. These timings are local warm measurements, not a guarantee across hosts or cold starts.

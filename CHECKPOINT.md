@@ -1,14 +1,14 @@
-# Project checkpoint — Part 3 complete
+# Project checkpoint — Part 4 complete
 
 Updated: 8 October 2026, Australia/Brisbane.
 
-Repository: [TanmaySomani/Insurance-pricing-calculator](https://github.com/TanmaySomani/Insurance-pricing-calculator), branch `main`. Verify publication using `git status`, `git log -3 --oneline` and the remote before continuing. Parts 1–2 were published as `db0f098` and `ca26bfc`; Part 3 publication is recorded in its handover.
+Repository: [TanmaySomani/Insurance-pricing-calculator](https://github.com/TanmaySomani/Insurance-pricing-calculator), branch `main`. Verify publication using `git status`, `git log -3 --oneline` and the remote before continuing. Parts 1–3 were published as `db0f098`, `ca26bfc` and `05856cd`; Part 4 publication is recorded in its handover.
 
 ## Objective and delivery boundaries
 
 Build a client-ready motor pricing case study in resumable parts: public data; exposure-aware Poisson frequency and Gamma severity GLMs; boosting comparison; validation and diagnostics; commercial simulation and a live dashboard with editable/addable assumptions and segment rows; final two-page manager summary and GitHub handover. Optional Australian context comes after the core work. Complete one bounded part per handover.
 
-Parts 1–3 are complete. **Next is Part 4: commercial engine and Streamlit dashboard.** Do not repeat model tuning or change targets using the now-published test results. The whole client delivery is not yet complete.
+Parts 1–4 are complete. **Next is Part 5: the two-page manager brief and client handover.** Do not repeat model tuning or change targets using the now-published test results. The whole client delivery is not yet complete.
 
 ## Completed implementation
 
@@ -20,6 +20,9 @@ Parts 1–3 are complete. **Next is Part 4: commercial engine and Streamlit dash
 - Identical final-test comparison, tie-aware exposure Gini, lift, deciles, segment A/E, paired policy-bootstrap intervals and tail/missing-cost sensitivities.
 - Validation permutation/age-response diagnostics, fixed hypothetical profile examples, timings, five comparison PNG/PDF figure pairs and a business interpretation.
 - Version 0.3.0 installed and its CLI evaluated successfully; **45 local tests pass**. Repeated frozen evaluation reproduced 13 evidence/model/selection files byte-for-byte. GitHub CI is defined but remote success has not been verified.
+
+- Part 4: independently checked annual renewal engine, exact segment totals, six-page Streamlit/Plotly dashboard, live controls, addable/editable segment and stress rows, model switch with a fixed price anchor, risk calculator/support screens, saved JSON/CSV scenarios, comparison/restore/import and verified browser previews.
+- Version 0.4.0; **72 local tests pass**. Full 135,246-policy scenario calculations reconcile independently at tolerance 1e-12. Warm Python rerun p95 about 0.14s; warm browser KPI update 0.36s. JSON upload/reload verified. Public hosting remains unconfigured.
 
 ## Critical decisions — preserve
 
@@ -36,6 +39,12 @@ Parts 1–3 are complete. **Next is Part 4: commercial engine and Streamlit dash
 11. Frozen **boosting dashboard default** passed validation screening: ≥1% pure-deviance gain, A/E within 0.80–1.25, paired validation deviance upper 95% bound below zero. This selects an illustrative dashboard default, not production or regulatory approval. GLM remains available as the explainable benchmark.
 12. Bootstrap samples policies 250 times with identical samples for both models; repeated claims stay with policy. Predictions/orders/bins stay fixed. Intervals omit fitting/tuning, missing costs, drift and unidentified shared customers. `<100 claims` is a volume screen, not formal credibility.
 13. Dashboard stack remains Python + Streamlit + Plotly. Commercial parameter edits recompute arithmetic without fitting models. Addable segment rows use one selected field and reject duplicates/unknown levels. New learned risk variables need data/refit/validation.
+
+14. Commercial horizon is one assumed annual renewal per policy, default cohort final test; historical exposure is never a forecast weight. Default assumptions: retention 85%, elasticity 1.2, claims inflation 0%, variable expense 25%, fixed expense EUR 30 per retained annual policy, synthetic-price margin 10%, rate corridor −20% to +20%.
+15. Baseline price anchor defaults to GLM and remains fixed when switching the claims model. Price is (anchor model loss + fixed expense) / (1 − variable expense − margin). Scenario LR uses synthetic premiums and contribution excludes capital/reinsurance/tax/investment income. Fixed expense is per retained policy, not book-level overhead.
+16. Global/segment changes multiply; corridor breaches are rejected, not clipped. The default baseline shares claims inflation/stress with the changed-price case. Optional unstressed baseline is explicitly labelled. Named frequency/severity/loss stress rows are assumptions, not learned features.
+17. Exact aggregates use annual loss sums and policy weights for one field at a time. Shared segment response/stress plus affine premiums preserve policy-level arithmetic. No cross-field overlapping rules. Empty/invalid inputs do not silently save or replace valid results.
+18. Scenario JSON binds checked inputs to the source/model/engine fingerprint. Outputs are recomputed, unknown schema/version rejected, no uploaded model deserialisation. Saved comparison entries are session-local; download JSON for persistence. The committed aggregates run the scenario/diagnostic pages without local bundles; the risk calculator additionally needs verified local models.
 
 ## Data findings
 
@@ -66,6 +75,14 @@ Main boosting still beats GLM on pure deviance after capping evaluated outcomes 
 
 Full evidence and trade-offs: `reports/comparison/MODEL_COMPARISON.md`. Recommendation: use boosting as the illustrative dashboard default and keep GLM available; compare both under identical commercial assumptions. Complete developed claims/current premiums/renewals/expenses and stability/governance review are needed for real repricing.
 
+## Part 4 commercial findings and recommendation
+
+On the 135,246-policy illustrative annual renewal cohort, baseline expected retention is 114,959 policies, synthetic premium EUR 37.19m and expected contribution EUR 5.27m. Claims model is frozen boosting; baseline price anchor GLM.
+
+A +5% move at assumed elasticity 1.2 gives contribution EUR 6.28m (+EUR 1.02m) and 108,422 retained policies (−6,537). At elasticity 3 the gain falls to EUR 0.49m and retained volume falls by 15,653. At elasticity 6 the contribution change is −EUR 0.30m and volume falls by 29,175. These are conditional simulated outcomes, not achieved profits or calibrated renewal forecasts. The recommendation is to investigate a modest bounded move and obtain actual premium/renewal evidence before rollout, rather than approve a blanket increase from a curve maximum.
+
+`reports/dashboard/COMMERCIAL_REPORT.md` leads with the bounded business conclusion and explains claims inflation, synthetic LR, segment investigations and the expense basis. `example_scenarios.csv` and five versioned JSON examples support reproducible walkthroughs. Browser screenshots are under `reports/dashboard/screenshots/`; final preview is locally served on port 8502 (8501 was already occupied; no unrelated process was stopped).
+
 ## Reproduction and artefacts
 
 Local verified runtime: CPython 3.14.7, macOS arm64; dependencies pinned in `requirements.lock.txt`. From a fresh checkout:
@@ -79,7 +96,9 @@ insurance-pricing prepare
 insurance-pricing train-glm
 insurance-pricing train-boost
 insurance-pricing evaluate
+insurance-pricing prepare-dashboard
 python -m pytest -q
+python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8502
 ```
 
 Existing local bundles allow `insurance-pricing evaluate` without refitting. Do not repeat tuning based on published test evidence. Other runtime versions require rebuilding previous stages rather than loading unchecked binaries. The integrity lock rejects stale data/configs/code/bundles before scoring.
@@ -93,18 +112,23 @@ After source edits, reinstall with `python -m pip install --no-deps .`, or use `
 - `reports/comparison/selection.json`: validation-only choice, hyperparameters, category levels, hashes and versions.
 - `evaluation_metadata.json`: frozen-selection digest and evaluation code hashes; `verification.json`: local execution/reproducibility evidence.
 - Comparison CSVs: tuning, metrics, paired intervals, deciles, segments, concentration curves, tails, permutation/age response, hypothetical profiles and timings.
+- `reports/dashboard/cohort.csv`: 198 exact aggregate rows across three partitions and eight segmentation fields, with annual model loss sums and historical evidence, no source IDs.
+- `reports/dashboard/manifest.json`, `risk_spec.json`, `risk_support.csv`: identity, supported ranges/categories and coarse training support.
+- `reports/dashboard/verification.json` and `browser_verification.json`: independent full-policy arithmetic, preserved model hashes and separately recorded timing/browser evidence.
+- `scripts/verify_dashboard.py`: regenerate numerical examples and warm Python benchmarks without model fitting.
+- `app.py`: Streamlit entry point; `docs/DASHBOARD_USAGE.md`: launch and interaction guide. Restart the server after source-module edits; reinstall regular package code when using its CLI.
 - Regenerate aggregate comparison figures: `PYTHONPATH=src .venv/bin/python figures/gen_fig_comparison.py`; GLM figures: `figures/gen_fig_glm.py`.
 
 ## Not yet implemented
 
-Commercial engine, Streamlit dashboard, hosting and final two-page manager PDF. No simulated profit result, actual renewal elasticity, Australian market analysis, coefficient/parameter confidence intervals, monotonic constraints or temporal/customer validation. The source lacks dates/customer IDs/current premiums/renewals; do not imply those checks have occurred.
+Public hosting, final two-page manager PDF and complete client handover/model cards. No actual renewal elasticity, achieved savings, current Australian pricing analysis, coefficient/parameter confidence bounds, monotonic constraints or temporal/customer validation. Source data lacks current premiums, renewals, dates and customer IDs. The core case study is operational locally; do not claim those absent facts or checks.
 
-## Next action: Part 4
+## Next action: Part 5
 
-Read `docs/DASHBOARD_SPEC.md`, methodology and model comparison first. Implement the commercial numerical engine separately from UI, verify zero-change/zero-elasticity and weighted portfolio identities, then build the dashboard with pre-trained artefacts and live controls. Use annual renewal cohort weights (default one per policy), not historical exposure as forecast horizon. Preserve the same claims stress in baseline/scenario comparisons and label synthetic premium, scenario loss ratio and expected underwriting contribution as assumptions/model estimates.
+Read the business report, dashboard usage and model comparison first. Create the final two-page PDF for a nontechnical pricing manager, leading with the question, bounded recommendation and renewal sensitivity. Use the published example scenarios and distinguish historical observations, model outputs and assumptions. Explain missing costs, tail uncertainty, A/E reversal, absent current premiums/renewals and governance limitations candidly.
 
-Add a model switch, risk calculator, diagnostic pages and editable/addable one-field segment rules. Validate invalid inputs, unknown/duplicate levels, unsupported risk categories/ranges, empty filters and zero denominators. Provide saved/reloaded JSON scenarios, CSV exports and a sensitivity curve. Measure edit-to-result performance before claiming ~1 second. Keep missing-cost coverage/volume beside repricing signals. New custom parameters can be labelled stress assumptions; new learned features require data and refitting. The final two-page PDF belongs to Part 5.
+Complete clean README/client handover, model cards, example scenario walkthrough, screenshot review and deployment packaging. Public hosting needs a deliberate plan for the risk-model binaries (currently Git-ignored) and verified runtime; the aggregate pages already run from the repository. Do not trigger fitting/downloading on dashboard edits. Verify PDF page count/render/readability, setup and the delivered dashboard. Publish to the agreed GitHub repo, update this checkpoint and keep optional Australian public-data context separate unless requested.
 
 Paste into a fresh chat:
 
-> Continue Part 4 of Insurance-pricing-calculator. Read CHECKPOINT.md, docs/DASHBOARD_SPEC.md, docs/METHODOLOGY.md and reports/comparison/MODEL_COMPARISON.md. Parts 1–3 are complete; boosting is the frozen illustrative dashboard default and GLM the benchmark. Do not retune on the published test. Implement and independently verify the commercial scenario engine, then build a polished Streamlit/Plotly dashboard with live assumptions, editable/addable segment rows, model switch, risk calculator, diagnostics, saved scenarios and exports. Preserve recorded-cost/EUR limitations and distinguish observed/modelled/assumed values. Measure responsiveness, update the checkpoint and publish to the agreed GitHub repository. Keep the two-page manager PDF for Part 5.
+> Continue Part 5 of Insurance-pricing-calculator. Read CHECKPOINT.md, docs/DASHBOARD_USAGE.md, reports/dashboard/COMMERCIAL_REPORT.md and reports/comparison/MODEL_COMPARISON.md. Parts 1–4 are complete; the live dashboard and renewal engine are tested. Do not retune the frozen models. Produce the final two-page pricing-manager PDF, clean client README/handover, model cards and example walkthrough; review deployment packaging and the risk-calculator artefact requirements. Lead with the bounded commercial conclusion and distinguish observed/modelled/assumed values. Verify PDF page count/readability and reproducibility, publish to the agreed GitHub repository and update the checkpoint. Keep Australian context optional and separately evidenced.

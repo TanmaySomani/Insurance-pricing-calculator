@@ -1,0 +1,65 @@
+{
+  "python": "3.14.7",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "fingerprint": "5b7f4832d54773ce257b8cd2b61f10bb4755d653304f572f059812db0b9fae91",
+  "local_tests_passed": 72,
+  "independent_policy_reconciliation": {
+    "policies": 135246,
+    "relative_tolerance": 1e-12,
+    "expected": {
+      "retained": 108772.4458408524,
+      "premium": 36794682.41076192,
+      "claims": 18134656.790509757,
+      "expenses": 12461843.977916054,
+      "contribution": 6198181.6423361115
+    }
+  },
+  "unchanged_sha256": {
+    "artifacts/glm/bundle.joblib": "d522e47661aa671cd45f21a8a8a012f7918bda39e8eefa2599702cfdb1bbda64",
+    "artifacts/boost/bundle.joblib": "d1b804e5e783d9ddbdb86f0ed5f0b808674567acc73e3426d4a1ed7076c59aea",
+    "reports/comparison/selection.json": "dd29613918c0d914799c33abb29686f492ee4cea163bcf175fb2132ef8205947"
+  },
+  "warm_python_rerun_seconds": [
+    0.13584404200082645,
+    0.13529120798921213,
+    0.1345817499968689,
+    0.1330940420011757,
+    0.14389004099939484,
+    0.1419745829916792
+  ],
+  "warm_python_rerun_p95_seconds": 0.14341117649746593,
+  "scenario_and_21_point_curve_seconds": [
+    0.09996579200378619,
+    0.09859829201013781,
+    0.09856929200759623,
+    0.10130799999751616,
+    0.10111270799825434,
+    0.09932308399584144,
+    0.10159529199881945,
+    0.09811950000585057,
+    0.11712624999927357,
+    0.11987037499784492
+  ],
+  "engine_p95_seconds": 0.11863551874848781,
+  "remote_ci_verified": false,
+  "browser_observation": {
+    "recorded_during": "Part 4 local browser verification, 8 October 2026",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7",
+    "fingerprint": "5b7f4832d54773ce257b8cd2b61f10bb4755d653304f572f059812db0b9fae91",
+    "warm_slider_to_visible_kpi_ms": 364,
+    "measurement_scope": "One final-preview warm edit, including CUA automation overhead. Excludes browser startup and approval time; not a host guarantee.",
+    "json_reload_verified": true,
+    "json_file": "example_2.json",
+    "json_sha256": "50d826ad5a0c9cf2962c1f4ca53ffa3ff9b922b080b905fc90f0264140d5d736",
+    "display_verified": {
+      "rate_change_percent": 5,
+      "scenario_name": "Plus 5 percent",
+      "contribution_eur_m": 6.28,
+      "retained_policies": 108422
+    }
+  },
+  "aggregate_only_checkout_smoke_passed": true,
+  "aggregate_only_calculator_state": "Explains local model bundle requirement; other pages run without raw/processed data or model binaries"
+}

@@ -1,6 +1,6 @@
 # Pricing methodology and decision rules
 
-Parts 1–3 implement data preparation, unpenalised Poisson/Gamma GLMs, a boosting challenger, locked validation selection and final-test comparison with paired sampling intervals. Commercial simulation and the live dashboard are next.
+Parts 1–3 implement data preparation, unpenalised Poisson/Gamma GLMs, a boosting challenger, locked validation selection and final-test comparison with paired sampling intervals. Part 4 adds independently checked commercial simulation and a live dashboard; the final manager brief is next.
 
 ## Business objective and target
 
@@ -96,3 +96,11 @@ For tail diagnostics, holdout claim costs capped at the training p99 are aggrega
 Permutation importance uses 20,000 seeded validation policies and three shuffles per input; shuffle SD is not a confidence interval or causal evidence. Age response averages predictions on 2,000 validation risks with driver age changed and GLM features regenerated. Six fixed hypothetical profiles illustrate GLM/boosting disagreement with no source IDs or outcome-based selection. Correlation, implausible combinations and sparse inputs limit all these explanations; monotonicity is not imposed.
 
 Final-test paired intervals support pure-deviance and raw-Gini improvement but include zero for top-decile lift and severity-deviance differences. Age 75+ calibration reverses between validation and test; single-segment point A/E is not a defensible rate-change multiplier. GLM stays the transparent benchmark and boosting the illustrative dashboard default. Before any genuine repricing, obtain actual premiums, renewal outcomes, developed claims and expense economics, and perform temporal/customer, fairness and jurisdiction-specific governance review.
+
+## Part 4 commercial interpretation
+
+The forecast horizon is one assumed annual renewal per historical policy, with representative weight one by default. Historical exposure is retained solely for model fitting/evaluation. Selected annual model losses and a separately chosen synthetic price anchor form exact one-field segment aggregates. Homogeneous response and stress within a segment make this equivalent to policy-level sums, independently verified on all final-test policies and on fractional representative weights.
+
+Claims-model switches hold baseline premiums fixed. Expenses use the stated variable premium share plus fixed expense per retained annual policy. Baseline and scenario share claims inflation/stress by default; an explicitly labelled unstressed baseline is optional. Zero retained premium produces an undefined loss/combined ratio, rendered as a dash. Combined global/segment changes are validated against a corridor rather than silently clipped.
+
+The +5% example has contribution gain under elasticity 1.2 and a loss under elasticity 6. These are conditional assumptions with synthetic prices, not empirical elasticity estimates or achieved profits. The dashboard recommends further investigation and response measurement. Uploaded scenarios are plain JSON with schema/version/input checks; saved outputs are recomputed, and untrusted model objects are never imported. New stress controls do not create learned rating effects. See DASHBOARD_USAGE.md and reports/dashboard/COMMERCIAL_REPORT.md for the complete contract and evidence.

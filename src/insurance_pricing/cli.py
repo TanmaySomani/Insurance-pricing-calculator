@@ -8,7 +8,7 @@ from insurance_pricing.download import download
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Insurance pricing project pipeline")
-    parser.add_argument("command", choices=["download", "prepare", "train-glm", "train-boost", "evaluate"])
+    parser.add_argument("command", choices=["download", "prepare", "train-glm", "train-boost", "evaluate", "prepare-dashboard"])
     parser.add_argument("--root", type=Path, default=Path.cwd())
     args = parser.parse_args()
     root = args.root.resolve()
@@ -24,6 +24,10 @@ def main() -> None:
         from insurance_pricing.training import train_glm
 
         train_glm(root)
+    elif args.command == "prepare-dashboard":
+        from insurance_pricing.dashboard_data import prepare_dashboard
+
+        prepare_dashboard(root)
     else:
         from insurance_pricing.comparison import evaluate_models, train_boost
 
