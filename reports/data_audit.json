@@ -1,0 +1,155 @@
+{
+  "target_basis": "Costs represented by matched, positive severity records; not ultimate claims",
+  "raw_frequency_rows": 678013,
+  "raw_severity_rows": 26639,
+  "missing_frequency_values": 0,
+  "missing_severity_values": 0,
+  "duplicate_frequency_ids": 0,
+  "unmatched_severity_records": 195,
+  "unmatched_severity_cost_eur": 788714.1800000002,
+  "portfolio": {
+    "policies": 678013,
+    "exposure_years": 358499.4454629838,
+    "source_claim_count": 36102,
+    "recorded_claim_count": 26444,
+    "recorded_claim_cost_eur": 59909216.5,
+    "source_frequency_per_year": 0.10070308464041305,
+    "recorded_frequency_per_year": 0.0737630150748181,
+    "recorded_severity_eur": 2265.5126493722582,
+    "recorded_loss_cost_per_year_eur": 167.11104370783696,
+    "count_mismatch_policies": 9117,
+    "positive_source_count_no_cost_policies": 9116,
+    "exposure_over_one_year_policies": 1224
+  },
+  "splits": {
+    "train": {
+      "policies": 407081,
+      "exposure_years": 215360.9107545475,
+      "source_claim_count": 21754,
+      "recorded_claim_count": 15945,
+      "recorded_claim_cost_eur": 37505837.86,
+      "source_frequency_per_year": 0.10101183136615542,
+      "recorded_frequency_per_year": 0.07403850561429384,
+      "recorded_severity_eur": 2352.2005556600816,
+      "recorded_loss_cost_per_year_eur": 174.15341404618403,
+      "count_mismatch_policies": 5487,
+      "positive_source_count_no_cost_policies": 5487,
+      "exposure_over_one_year_policies": 735
+    },
+    "validation": {
+      "policies": 135686,
+      "exposure_years": 71629.22622801107,
+      "source_claim_count": 7173,
+      "recorded_claim_count": 5229,
+      "recorded_claim_cost_eur": 11884075.64,
+      "source_frequency_per_year": 0.1001406880644894,
+      "recorded_frequency_per_year": 0.0730009281875387,
+      "recorded_severity_eur": 2272.7243526486895,
+      "recorded_loss_cost_per_year_eur": 165.9109872577774,
+      "count_mismatch_policies": 1827,
+      "positive_source_count_no_cost_policies": 1827,
+      "exposure_over_one_year_policies": 235
+    },
+    "test": {
+      "policies": 135246,
+      "exposure_years": 71509.30848042518,
+      "source_claim_count": 7175,
+      "recorded_claim_count": 5270,
+      "recorded_claim_cost_eur": 10519303.0,
+      "source_frequency_per_year": 0.10033658767605158,
+      "recorded_frequency_per_year": 0.07369669924080723,
+      "recorded_severity_eur": 1996.0726755218216,
+      "recorded_loss_cost_per_year_eur": 147.10396763072507,
+      "count_mismatch_policies": 1803,
+      "positive_source_count_no_cost_policies": 1802,
+      "exposure_over_one_year_policies": 254
+    }
+  },
+  "severity_percentiles_eur": {
+    "0.5": 1172.0,
+    "0.9": 2767.604,
+    "0.95": 4765.093499999995,
+    "0.99": 16451.223999999962,
+    "0.999": 152223.24082000018,
+    "1": 4075400.56
+  },
+  "top_one_percent_claim_cost_share": 0.3801399028478365,
+  "category_levels": {
+    "Area": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "VehGas": [
+      "Diesel",
+      "Regular"
+    ],
+    "VehBrand": [
+      "B1",
+      "B10",
+      "B11",
+      "B12",
+      "B13",
+      "B14",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6"
+    ],
+    "Region": [
+      "R11",
+      "R21",
+      "R22",
+      "R23",
+      "R24",
+      "R25",
+      "R26",
+      "R31",
+      "R41",
+      "R42",
+      "R43",
+      "R52",
+      "R53",
+      "R54",
+      "R72",
+      "R73",
+      "R74",
+      "R82",
+      "R83",
+      "R91",
+      "R93",
+      "R94"
+    ]
+  },
+  "warnings": [
+    "Positive source counts without costs are not established zero ultimate losses.",
+    "Original source counts and recorded-cost counts define different targets.",
+    "Source exposure >1 year is retained; capping it would change annualised risk.",
+    "No policy dates, customer IDs, historical premiums or renewal outcomes: no temporal validation or estimated elasticity.",
+    "No inflation, development, expenses, taxes or reinsurance adjustment has been applied."
+  ],
+  "config": {
+    "split_seed": 20261008,
+    "train_bucket_end": 6000,
+    "validation_bucket_end": 8000,
+    "split_bucket_count": 10000,
+    "target_basis": "linked_recorded_claim_costs",
+    "exposure_treatment": "retain_positive_source_exposure_without_capping"
+  },
+  "feature_columns": [
+    "Area",
+    "VehBrand",
+    "VehGas",
+    "Region",
+    "driver_age_band",
+    "vehicle_age_band",
+    "vehicle_power_band",
+    "bonus_malus_scaled",
+    "log_density"
+  ],
+  "config_sha256": "877249d3e1c2b4cd11f804c1b6d8753356272ba3d58a1abe64be4d013a6f1012"
+}

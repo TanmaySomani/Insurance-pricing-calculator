@@ -1,0 +1,24 @@
+{
+  "frequency": {
+    "dataset_id": 41214,
+    "name": "freMTPL2freq",
+    "version": 1,
+    "licence_reported_by_openml": "CC0",
+    "metadata_url": "https://www.openml.org/api/v1/json/data/41214",
+    "download_url": "https://data.openml.org/datasets/0004/41214/dataset_41214.pq",
+    "sha256": "aead80a9ac68baf2c78fc1beaa287441d88d06cc11be60a1f226784d164c6dd7",
+    "bytes": 7469711,
+    "citation": "C. Dutang and A. Charpentier (2018), CASdatasets: Insurance datasets."
+  },
+  "severity": {
+    "dataset_id": 41215,
+    "name": "freMTPL2sev",
+    "version": 1,
+    "licence_reported_by_openml": "CC0",
+    "metadata_url": "https://www.openml.org/api/v1/json/data/41215",
+    "download_url": "https://data.openml.org/datasets/0004/41215/dataset_41215.pq",
+    "sha256": "c721d570c42eeaf4a70cc12f4c1e04095a6046f6cdbc01fad919274879783e60",
+    "bytes": 277195,
+    "citation": "C. Dutang and A. Charpentier (2018), CASdatasets: Insurance\n  datasets."
+  }
+}

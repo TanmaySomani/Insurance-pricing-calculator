@@ -1,0 +1,8 @@
+{
+  "split_seed": 20261008,
+  "train_bucket_end": 6000,
+  "validation_bucket_end": 8000,
+  "split_bucket_count": 10000,
+  "target_basis": "linked_recorded_claim_costs",
+  "exposure_treatment": "retain_positive_source_exposure_without_capping"
+}

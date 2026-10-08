@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "insurance-pricing-calculator"
+version = "0.1.0"
+description = "Reproducible motor insurance pricing and commercial scenario analysis"
+requires-python = ">=3.12,<3.15"
+dependencies = ["numpy>=2.2,<3", "pandas>=2.2,<4", "pyarrow>=19,<26"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+insurance-pricing = "insurance_pricing.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
