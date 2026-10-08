@@ -26,7 +26,9 @@ python -m pip install --no-deps .
 python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8502
 ```
 
-Open localhost:8502. The committed aggregates run scenario, portfolio, comparison, segment and saved-scenario pages without downloads or fitted binaries. Individual risk scoring additionally needs the verified full local pipeline. Do not train on a dashboard rerun.
+After running the commands above on your own computer, enter `http://127.0.0.1:8502` in a browser on that same computer. This accesses your own running dashboard; there is no public dashboard URL. For review without installation, use the [pricing-manager brief](../output/pdf/pricing_manager_brief.pdf) and [screenshots](../reports/dashboard/screenshots/).
+
+The committed aggregates run scenario, portfolio, comparison, segment and saved-scenario pages without downloads or fitted binaries. Individual risk scoring additionally needs the verified full local pipeline. Do not train on a dashboard rerun.
 
 ## Five-minute manager demonstration
 

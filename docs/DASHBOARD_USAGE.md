@@ -15,7 +15,7 @@ python -m pip install --no-deps .
 python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8502
 ```
 
-Visit [the local pricing studio](http://127.0.0.1:8502). This binds only to the local computer. Public hosting is not configured in Part 4.
+After running the commands above on your own computer, enter `http://127.0.0.1:8502` in a browser on that same computer. The address accesses only your own running dashboard. There is no publicly hosted dashboard; readers can review the [screenshots](../reports/dashboard/screenshots/) without installing the application.
 
 The committed, verified aggregate inputs let the scenario and diagnostic pages run directly from a fresh checkout. The individual risk calculator additionally needs the local fitted bundles. Rebuild all stages when needed:
 
