@@ -47,6 +47,8 @@ Boosting reduces pure-premium deviance by **3.24%**. Paired 250-draw policy-boot
 
 GLM uses explicit multiplicative factors and reference bands. Boosting captures nonlinear interactions but needs more explanation and stability review; monotonicity is not imposed. Neither model has established jurisdiction-specific regulatory acceptance or production approval. The dashboard-default choice was frozen on validation before test access. See [model cards](docs/MODEL_CARDS.md), [comparison report](reports/comparison/MODEL_COMPARISON.md) and [GLM diagnostics](reports/glm/GLM_REPORT.md).
 
+![Model comparison dashboard: frozen final-test metrics, exposure concentration and decile actual versus expected](reports/dashboard/screenshots/model-comparison.png)
+
 ## Data, targets and limitations
 
 Public source: **freMTPL2, OpenML version 1**, [frequency 41214](https://www.openml.org/d/41214) and [severity 41215](https://www.openml.org/d/41215). Attribution: C. Dutang and A. Charpentier, CASdatasets (2018); [CASdatasets field documentation](https://dutangc.github.io/CASdatasets/reference/freMTPL.html). CC0 is reported in the saved OpenML metadata. [Source manifest](reports/data_manifest.json) and [source lock](configs/source_lock.json) pin the exact downloaded bytes. No Kaggle credentials are needed. freMTPL2 was chosen over a severity-only competition because linked exposures, counts and costs support the complete workflow.
