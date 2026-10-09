@@ -8,7 +8,7 @@ Repository: [TanmaySomani/Insurance-pricing-calculator](https://github.com/Tanma
 
 Build a client-ready motor pricing case study in resumable parts: public data; exposure-aware Poisson frequency and Gamma severity GLMs; boosting comparison; validation and diagnostics; commercial simulation and a live dashboard with editable/addable assumptions and segment rows; final two-page manager summary and GitHub handover. Optional Australian context comes after the core work. Complete one bounded part per handover.
 
-Parts 1–5 are complete as a locally verified portfolio case study. Do not repeat tuning or change targets using published test results. The two-page manager brief, client handover, model cards, clean README and aggregate packaging are delivered. Public hosting, operational repricing and optional Australian context are separate future work, not missing core-case-study deliverables.
+Parts 1–5 are complete as a locally verified portfolio case study. Do not repeat tuning or change targets using published test results. The two-page manager brief, client handover, model cards, clean README and aggregate packaging are delivered. A public aggregate dashboard is now deployed at https://insurance-pricing-calculator.streamlit.app/. Operational repricing and optional Australian context remain separate future work.
 
 ## Completed implementation
 
@@ -22,7 +22,7 @@ Parts 1–5 are complete as a locally verified portfolio case study. Do not repe
 - Version 0.3.0 installed and its CLI evaluated successfully; **45 local tests pass**. Repeated frozen evaluation reproduced 13 evidence/model/selection files byte-for-byte. GitHub CI is defined but remote success has not been verified.
 
 - Part 4: independently checked annual renewal engine, exact segment totals, six-page Streamlit/Plotly dashboard, live controls, addable/editable segment and stress rows, model switch with a fixed price anchor, risk calculator/support screens, saved JSON/CSV scenarios, comparison/restore/import and verified browser previews.
-- Version 0.4.0; **72 local tests pass**. Full 135,246-policy scenario calculations reconcile independently at tolerance 1e-12. Warm Python rerun p95 about 0.14s; warm browser KPI update 0.36s. JSON upload/reload verified. Public hosting remains unconfigured.
+- Version 0.4.0; **72 local tests pass**. Full 135,246-policy scenario calculations reconcile independently at tolerance 1e-12. Warm Python rerun p95 about 0.14s; warm browser KPI update 0.36s. JSON upload/reload verified locally. Public aggregate hosting is deployed; individual risk scoring remains local.
 
 ## Critical decisions — preserve
 
@@ -121,7 +121,7 @@ After source edits, reinstall with `python -m pip install --no-deps .`, or use `
 
 ## Remaining boundaries
 
-Public hosting and optional Australian analysis remain unconfigured. No actual renewal elasticity, achieved savings, current Australian pricing analysis, coefficient/parameter confidence bounds, monotonic constraints, fairness/regulatory approval or temporal/customer validation are established. Source data lacks current premiums, renewals, dates and customer IDs. The five-part case study is ready for review and demonstration within those limits.
+Public aggregate hosting is deployed; optional Australian analysis remains unconfigured. No actual renewal elasticity, achieved savings, current Australian pricing analysis, coefficient/parameter confidence bounds, monotonic constraints, fairness/regulatory approval or temporal/customer validation are established. Source data lacks current premiums, renewals, dates and customer IDs. The five-part case study is ready for review and demonstration within those limits.
 
 ## Part 5 delivery and verification
 
@@ -151,14 +151,22 @@ PDF previews are `output/pdf/pricing_manager_brief-page-1.png` and `-page-2.png`
 
 ## Possible next work — choose a separate scope
 
-The five bounded parts are finished. A future task can add separately sourced Australian APRA/ICA/BOM context, arrange a deliberate public aggregate-demo deployment, or plan a new genuine insurer-data pricing study. Real operational repricing needs developed claims, current premiums, renewal/competitor evidence, expense economics, untouched time/customer validation and applicable governance review.
+The five bounded parts are finished and public aggregate hosting is deployed. A future task can add separately sourced Australian APRA/ICA/BOM context, plan a separately validated full hosted calculator, or plan a new genuine insurer-data pricing study. Real operational repricing needs developed claims, current premiums, renewal/competitor evidence, expense economics, untouched time/customer validation and applicable governance review.
 
 Paste into a fresh chat:
 
-> Continue Insurance-pricing-calculator from CHECKPOINT.md. Parts 1–5 are complete: public-data audit, frozen GLM/boost comparison, tested live scenario dashboard, two-page manager PDF and client handover/model cards/aggregate packaging. Preserve the frozen estimand, models, test results and scenario identity. Do not retune or claim a hosted service, calibrated elasticity or production approval. Read docs/CLIENT_HANDOVER.md and docs/DEPLOYMENT.md, then carry out the newly requested scope. Optional Australian context must be separately sourced and evidenced; any full hosted risk calculator must account for both verified bundles and matching prepared data under the current verifier.
+> Continue Insurance-pricing-calculator from CHECKPOINT.md. Parts 1–5 are complete: public-data audit, frozen GLM/boost comparison, tested live scenario dashboard, two-page manager PDF and client handover/model cards/aggregate packaging. Public aggregate hosting is live at https://insurance-pricing-calculator.streamlit.app/; full risk scoring remains local. Preserve the frozen estimand, models, test results and scenario identity. Do not retune or claim calibrated elasticity or production approval. Read docs/CLIENT_HANDOVER.md and docs/DEPLOYMENT.md, then carry out the newly requested scope. Optional Australian context must be separately sourced and evidenced; any full hosted risk calculator must account for both verified bundles and matching prepared data under the current verifier.
 
 ## Follow-up: free public hosting preparation — 9 October 2026
 
 The user requested free hosting so visitors can test the dashboard. Selected Streamlit Community Cloud using current official documentation. Added root `requirements.txt` referencing the unchanged application lock, configured CI to install through that hosting entry point, packaged the file in the client allowlist, and corrected the obsolete dashboard stage caption. Model/selection/scenario-engine identities remain unchanged.
 
 `docs/HOSTING.md` gives `TanmaySomani/Insurance-pricing-calculator`, branch `main`, entrypoint `app.py`, Advanced Python 3.14, no secrets and public access; it distinguishes aggregate features from the missing local risk-calculator artefacts. Do not create a public URL in README until deployed and verified. Account sign-in/terms acceptance is still required at share.streamlit.io; the observed browser was signed out. The free provider sleeps apps after 12 hours of inactivity, according to the checked docs. Next: account owner signs in/connects GitHub, deploy the prepared branch, verify actual public controls/pages/exports and add the real URL. No provider account, OAuth permission, subscription or public deployment was created by preparation alone.
+
+## Follow-up: public dashboard deployed — 9 October 2026
+
+The account owner signed into Streamlit Community Cloud and completed account setup. Deployed main / app.py from commit 83113bede9940bf5f2eabc30bafefffe721467a3, with Python 3.14 selected and no secrets, at https://insurance-pricing-calculator.streamlit.app/. Public sharing was visibly checked. This completed follow-up supersedes the earlier preparation-only status.
+
+Hosted browser checks: all six page states rendered; baseline contribution EUR 5.27m / retained 114,959; +5% boosting EUR 6.28m / 108,422; switching claims to GLM gave EUR 4.82m while premium EUR 36.83m and retained 108,422 stayed fixed; restored boosting; saved Hosted five percent review; downloaded JSON and reconciled its outputs locally. The risk page shows the expected local-artefact setup message. No models were retrained or uploaded. Source records and fitted bundles remain excluded.
+
+Deployment observations, export and screenshot are in reports/hosting/. A logged-out browser run, hosted re-upload, simultaneous-user capacity and availability measurements were not performed. Free-provider sleep behaviour remains documented in docs/HOSTING.md. README and usage/handover/deployment guides now link the actual public app. Resume later work from this checkpoint while preserving frozen models, test evidence and scenario identity.

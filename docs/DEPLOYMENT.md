@@ -1,10 +1,10 @@
 # Deployment review and packaging
 
-**Delivery status:** Verified local dashboard and aggregate-demo package. Public hosting is not configured or claimed. No host account, authentication, domain, uploaded model binaries or hosting costs were provisioned in Part 5.
+**Delivery status:** Verified local dashboard, aggregate-demo package and [public Streamlit dashboard](https://insurance-pricing-calculator.streamlit.app/). The public aggregate app was deployed on 9 October 2026 after Part 5, with Python 3.14 selected and no secrets. No model binaries or policy records were uploaded. Part 5 itself delivered the local package; [hosting evidence](../reports/hosting/deployment.json) records the later deployment separately.
 
 ## Free-hosting preparation (9 October 2026)
 
-Streamlit Community Cloud deployment files and a step-by-step [hosting guide](HOSTING.md) are prepared. The root `requirements.txt` includes the pinned application lock, and CI installs through that same entry point. Use `main`, `app.py`, Python 3.14 and no secrets. Account sign-in/terms and GitHub connection remain with the account owner; actual hosting and a public URL are not claimed. A hosted aggregate demo is the recommended initial showcase. The full-scoring requirements below remain unchanged.
+Streamlit Community Cloud deployment files and a step-by-step [hosting guide](HOSTING.md) are prepared. The root `requirements.txt` includes the pinned application lock, and CI installs through that same entry point. Use `main`, `app.py`, Python 3.14 and no secrets. The account owner completed sign-in and the app is publicly deployed. Hosted browser checks verified six page states, rate and model changes, scenario saving and JSON export. Load capacity and production availability remain unmeasured. The full-scoring requirements below remain unchanged.
 
 ## Supported delivery modes
 
@@ -12,7 +12,7 @@ Streamlit Community Cloud deployment files and a step-by-step [hosting guide](HO
 |---|---|---|
 | Repository / aggregate ZIP | Scenario, portfolio, comparison, segment and saved-scenario pages; risk page explains missing artefacts | Python 3.14 verified environment and locked dependencies; no raw data or models |
 | Full local reconstruction | Above plus hypothetical individual risk scoring | Run the fixed data/training/evaluation/aggregate stages in order |
-| Future hosted aggregate demo | Same aggregate behaviour as a clean checkout | Deliberate host/runtime selection, install/start/health checks and access policy; not deployed |
+| Public hosted aggregate demo | Same aggregate behaviour as a clean checkout | Open the public URL; Python 3.14 selected on Streamlit Community Cloud, public sharing enabled |
 | Future hosted full calculator | Hypothetical frozen individual predictions | Trusted compatible bundles **and** matching prepared policy/claim tables/config/code/runtime; separate data/artefact distribution decision |
 
 No standalone wheel-only deployment is claimed: the app expects the repository tree, source files, configs and checked reports. `scripts/package_client.py` packages that tree using an explicit allowlist and per-file SHA-256 manifest. `dist/` stays Git-ignored. The ZIP never contains source policy records, pickle/joblib files or secrets.
@@ -23,7 +23,7 @@ Use [the handover install commands](CLIENT_HANDOVER.md). Default demonstration b
 
 Health probe: `GET /_stcore/health` should return `ok`. Then exercise a +5% change, model switch with fixed anchor, saved JSON reload and all six pages. A green health response alone does not validate the evidence or calculations. Run `scripts/verify_handover.py` in the selected environment before release.
 
-The local evidence uses CPython 3.14.7 and `requirements.lock.txt`; optional PDF generation uses `requirements-report.txt`. Other operating systems/interpreters need their own clean installation and checks. No Docker image, Linux host smoke test or cloud capacity benchmark is claimed. A selected hosting platform must support all pinned dependency versions; do not silently loosen them to get a deployment through. [Streamlit deployment guidance](https://docs.streamlit.io/deploy) describes the hosting options; no particular plan or availability is assumed here.
+The local evidence uses CPython 3.14.7 and `requirements.lock.txt`; optional PDF generation uses `requirements-report.txt`. Other operating systems/interpreters need their own clean installation and checks. No Docker image or cloud capacity benchmark is claimed. The Community Cloud app has been checked through its hosted browser UI. A selected hosting platform must support all pinned dependency versions; do not silently loosen them to get a deployment through. [Streamlit deployment guidance](https://docs.streamlit.io/deploy) describes hosting options; no production availability is established here.
 
 ## Artefact integrity and portability
 

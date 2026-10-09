@@ -2,7 +2,11 @@
 
 Prepared on 9 October 2026. Host: **Streamlit Community Cloud**, a free service for publicly sharing community apps. This is a historical public-data portfolio demonstration. Its resource limits and hibernation make it suitable for visitors testing the case study, without a production availability promise.
 
-**Status: repository prepared; account sign-in and actual deployment still required.** A proposed subdomain is not a live app. Add the verified public URL to README only after the app is deployed and checked.
+**Status: deployed and verified on 9 October 2026.** [Open the public dashboard](https://insurance-pricing-calculator.streamlit.app/). Deployment used commit `83113bede9940bf5f2eabc30bafefffe721467a3`, branch `main`, entrypoint `app.py`, Advanced settings Python 3.14 and no secrets. The Share panel showed **Make this app public** checked. Observations are recorded in [deployment.json](../reports/hosting/deployment.json); the earlier [verification.json](../reports/hosting/verification.json) remains a pre-deployment local record.
+
+Hosted checks covered all six page states; the default and +5% commercial results; a claims-model switch that preserved premium and retained volume; a saved comparison; and a downloaded JSON scenario reconciled locally against the frozen aggregate engine. The Risk calculator correctly shows its local setup requirement. A separate logged-out browser run, hosted JSON re-upload, simultaneous-user capacity and availability measurements were not performed. These checks establish a working public demo, without a production service guarantee.
+
+![Hosted +5% scenario](../reports/hosting/screenshots/public-dashboard.jpg)
 
 ## Deploy from GitHub
 

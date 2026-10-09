@@ -2,7 +2,7 @@
 
 **Business decision:** Investigate a modest +5% option using actual premium and renewal evidence before rollout. The default scenario adds EUR 1.02m contribution with 6,537 fewer retained policies; at elasticity 6 it loses EUR 0.30m. Keep boosting and GLM available at a common price anchor. All commercial results are conditional simulations.
 
-The five core parts are delivered as a reproducible portfolio case study. Public hosting and real tariff approval are separate decisions. Optional Australian public-data context has not been added.
+The five core parts are delivered as a reproducible portfolio case study. A [public aggregate dashboard](https://insurance-pricing-calculator.streamlit.app/) was deployed on 9 October 2026; real tariff approval remains a separate decision. Optional Australian public-data context has not been added.
 
 ## Start here
 
@@ -73,7 +73,7 @@ Completed: source provenance and target audit; exposure-aware GLMs; frozen boost
 
 The latest execution evidence is [handover verification](../reports/handover/verification.json). Earlier-stage checks remain in their original reports. Local checks and remote CI are different evidence: consult the GitHub Actions run for a particular commit rather than inferring success from a workflow definition.
 
-Not delivered or established: public URL/host operations; real premiums/renewals/elasticity; ultimate loss development; current Australian rates; production approval; temporal/customer validation; fairness or regulatory acceptance; parameter confidence bounds; monotonic constraints. The delivered case study is suitable for review and demonstration, with these boundaries visible.
+The public URL and hosted interaction checks are recorded in [hosting evidence](../reports/hosting/deployment.json). Not delivered or established: production host operations/capacity; real premiums/renewals/elasticity; ultimate loss development; current Australian rates; production approval; temporal/customer validation; fairness or regulatory acceptance; parameter confidence bounds; monotonic constraints. The delivered case study is suitable for review and demonstration, with these boundaries visible.
 
 ## Proposed operational decision, owner and monitoring
 

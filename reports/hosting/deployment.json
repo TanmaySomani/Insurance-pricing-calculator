@@ -1,0 +1,87 @@
+{
+  "deployed_on": "2026-10-09",
+  "timezone": "Australia/Brisbane",
+  "provider": "Streamlit Community Cloud",
+  "status": "Deployed; public sharing and hosted browser interactions verified",
+  "public_url": "https://insurance-pricing-calculator.streamlit.app/",
+  "deployment_source_commit": "83113bede9940bf5f2eabc30bafefffe721467a3",
+  "repository": "TanmaySomani/Insurance-pricing-calculator",
+  "branch": "main",
+  "entrypoint": "app.py",
+  "python_selected_in_advanced_settings": "3.14",
+  "runtime_patch_version_independently_verified": false,
+  "secrets_required": false,
+  "public_sharing_checkbox_verified": true,
+  "logged_out_browser_run_performed": false,
+  "fingerprint": "5b7f4832d54773ce257b8cd2b61f10bb4755d653304f572f059812db0b9fae91",
+  "hosted_pages_verified": [
+    "Rate scenarios",
+    "Portfolio",
+    "Model comparison",
+    "Segment diagnostics",
+    "Risk calculator",
+    "Saved scenarios"
+  ],
+  "risk_calculator_state": "Local bundles and matching prepared records required; hosted setup message verified",
+  "live_rate_change_verified": true,
+  "exported_outputs": {
+    "baseline": {
+      "retained": 114959.1,
+      "premium": 37192955.19939718,
+      "claims": 19177059.28061167,
+      "expenses": 12747011.799849294,
+      "contribution": 5268884.11893621,
+      "loss_ratio": 0.5156099905963507,
+      "combined_ratio": 0.8583365024185653,
+      "retention": 0.8500000000000001
+    },
+    "scenario": {
+      "retained": 108421.69592915964,
+      "premium": 36831790.117552176,
+      "claims": 18086513.291578896,
+      "expenses": 12460598.407262834,
+      "contribution": 6284678.418710449,
+      "loss_ratio": 0.4910571339012864,
+      "combined_ratio": 0.8293680975414908,
+      "retention": 0.8016628656607933
+    },
+    "unstressed_baseline": {
+      "retained": 114959.1,
+      "premium": 37192955.19939718,
+      "claims": 19177059.28061167,
+      "expenses": 12747011.799849294,
+      "contribution": 5268884.11893621,
+      "loss_ratio": 0.5156099905963507,
+      "combined_ratio": 0.8583365024185653,
+      "retention": 0.8500000000000001
+    }
+  },
+  "claims_model_switch": {
+    "price_anchor": "glm",
+    "rate_change": 0.05,
+    "glm_displayed_contribution_eur": "4.82m",
+    "boost_displayed_contribution_eur": "6.28m",
+    "unchanged_displayed_premium_eur": "36.83m",
+    "unchanged_displayed_retained_policies": "108,422",
+    "boost_restored": true
+  },
+  "scenario_saved_in_session": "Hosted five percent review",
+  "json_export_downloaded": true,
+  "local_export_reconciliation": {
+    "passed": true,
+    "relative_tolerance": 1e-12,
+    "absolute_tolerance": 1e-08,
+    "checks": 24
+  },
+  "checks_not_performed": [
+    "Logged-out browser interaction",
+    "Hosted JSON re-upload",
+    "Concurrent-user capacity benchmark",
+    "Availability measurement"
+  ],
+  "artefacts_sha256": {
+    "reports/hosting/hosted-five-percent.json": "58156d3779457edf7fe1bed884dee9a13a1f3c6589c6edc251e3692bcc56823c",
+    "reports/hosting/screenshots/public-dashboard.jpg": "5b07643c387b975c9477340bfba5388f0e34aa0f493389f7e6c1dc829b885901"
+  },
+  "scope": "Historical public-data aggregate demonstration. No production tariff, calibrated elasticity or individual hosted scoring is established."
+}

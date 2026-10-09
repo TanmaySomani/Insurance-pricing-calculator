@@ -4,19 +4,21 @@
 
 **Conclusion:** Use boosting for illustrative scenario exploration and retain the Poisson/Gamma GLM as an explainable benchmark. Investigate a bounded +5% rate option with actual premium and renewal evidence before rollout. At assumed elasticity 1.2, the example adds **EUR 1.02m contribution** with **6,537 fewer retained policies**; at elasticity 6, it loses **EUR 0.30m**. These are conditional simulations using synthetic prices, not achieved savings or a recommended live tariff.
 
-All five core parts are complete as a reproducible, locally verified portfolio case study. Public hosting, production approval and optional Australian context are outside this completed delivery.
+All five core parts are complete as a reproducible portfolio case study, with a public aggregate dashboard deployed on 9 October 2026. Production approval and optional Australian context remain outside this delivery.
+
+**[Open the live dashboard](https://insurance-pricing-calculator.streamlit.app/)** — change assumptions and see their effect on contribution, retention and premium.
 
 **Start with the [two-page pricing-manager brief](output/pdf/pricing_manager_brief.pdf), [client handover](docs/CLIENT_HANDOVER.md) or [dashboard guide](docs/DASHBOARD_USAGE.md).**
 
-![Live pricing dashboard: five-percent illustrative scenario](reports/dashboard/screenshots/rate-scenario.jpg)
+![Public Streamlit dashboard: five-percent illustrative scenario](reports/hosting/screenshots/public-dashboard.jpg)
 
 ## Free public hosting
 
-The repository is prepared for **Streamlit Community Cloud**. Account sign-in and actual deployment are still required; no public URL is claimed yet. See the [free-hosting guide](docs/HOSTING.md) for the exact repository/branch/entrypoint settings, Python 3.14 selection, public access and verification checklist. Hosted users can test the aggregate scenarios and diagnostics; individual risk scoring still needs the full local artefacts. Free apps may sleep after inactivity and can be woken by visitors.
+The dashboard is live on **Streamlit Community Cloud** at [insurance-pricing-calculator.streamlit.app](https://insurance-pricing-calculator.streamlit.app/). Public sharing is enabled. Hosted checks covered all six page states, the +5% rate change, claims-model switching at a fixed price anchor, saving a comparison and downloading scenario JSON. See the [hosting guide](docs/HOSTING.md) and [deployment evidence](reports/hosting/deployment.json). Individual risk scoring still needs the full local artefacts. Free apps may sleep after inactivity and can be woken by visitors.
 
 ## Run the dashboard locally
 
-There is currently no publicly hosted dashboard. To use the interactive dashboard, clone or download this repository and run the commands below on your own computer, from the repository root, using Python 3.14:
+For a local dashboard, including individual risk scoring after reconstructing the verified artefacts, clone or download this repository and run these commands from the repository root using Python 3.14:
 
 ```bash
 python3.14 -m venv .venv
@@ -32,7 +34,7 @@ Scenario, portfolio, comparison, segment and saved-scenario pages run from commi
 
 The six-page Streamlit/Plotly dashboard supports live rate, elasticity, retention, claims-inflation and expense changes; add/edit/remove segment adjustments and response overrides; named frequency/severity/loss stresses; sensitivity curves; model comparison at a fixed price anchor; hypothetical risk inputs and support warnings; and JSON/CSV exports with save/compare/restore/reload. Session saves need a download to persist. Added stress controls are assumptions; a new learned risk variable requires training data and a validated refit.
 
-See the [five-minute manager walkthrough](docs/CLIENT_HANDOVER.md#five-minute-manager-demonstration). [Example scenario JSON/CSV](reports/dashboard/) reproduces the commercial table. [Deployment review](docs/DEPLOYMENT.md) documents the aggregate package and full-calculator artefact requirements; no public service is claimed.
+See the [five-minute manager walkthrough](docs/CLIENT_HANDOVER.md#five-minute-manager-demonstration). [Example scenario JSON/CSV](reports/dashboard/) reproduces the commercial table. [Deployment review](docs/DEPLOYMENT.md) documents the public aggregate deployment and full-calculator artefact requirements.
 
 ## Frozen evidence and model choice
 
