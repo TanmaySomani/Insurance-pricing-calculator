@@ -470,7 +470,7 @@ def main(root: Path):
     st.markdown('<div class="eyebrow">OBSERVED DATA · FROZEN MODELS · EXPLICIT ASSUMPTIONS</div>', unsafe_allow_html=True)
     st.sidebar.divider()
     st.sidebar.caption("Boosting default · GLM benchmark\n\nNo live tariff recommendation. Missing costs and large losses remain material.")
-    st.sidebar.caption("Project stages 1–4 · Manager brief next")
+    st.sidebar.caption("Project stages 1–5 complete · Historical public-data demo")
     if page == "Rate scenarios": scenario_page(st.session_state["inputs"], data, manifest)
     elif page == "Portfolio": portfolio_page(data, manifest)
     elif page == "Model comparison": comparison_page(tables)

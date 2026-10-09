@@ -2,6 +2,10 @@
 
 **Delivery status:** Verified local dashboard and aggregate-demo package. Public hosting is not configured or claimed. No host account, authentication, domain, uploaded model binaries or hosting costs were provisioned in Part 5.
 
+## Free-hosting preparation (9 October 2026)
+
+Streamlit Community Cloud deployment files and a step-by-step [hosting guide](HOSTING.md) are prepared. The root `requirements.txt` includes the pinned application lock, and CI installs through that same entry point. Use `main`, `app.py`, Python 3.14 and no secrets. Account sign-in/terms and GitHub connection remain with the account owner; actual hosting and a public URL are not claimed. A hosted aggregate demo is the recommended initial showcase. The full-scoring requirements below remain unchanged.
+
 ## Supported delivery modes
 
 | Mode | What is available | What the recipient needs |

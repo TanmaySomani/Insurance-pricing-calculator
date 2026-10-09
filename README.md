@@ -10,6 +10,10 @@ All five core parts are complete as a reproducible, locally verified portfolio c
 
 ![Live pricing dashboard: five-percent illustrative scenario](reports/dashboard/screenshots/rate-scenario.jpg)
 
+## Free public hosting
+
+The repository is prepared for **Streamlit Community Cloud**. Account sign-in and actual deployment are still required; no public URL is claimed yet. See the [free-hosting guide](docs/HOSTING.md) for the exact repository/branch/entrypoint settings, Python 3.14 selection, public access and verification checklist. Hosted users can test the aggregate scenarios and diagnostics; individual risk scoring still needs the full local artefacts. Free apps may sleep after inactivity and can be woken by visitors.
+
 ## Run the dashboard locally
 
 There is currently no publicly hosted dashboard. To use the interactive dashboard, clone or download this repository and run the commands below on your own computer, from the repository root, using Python 3.14:

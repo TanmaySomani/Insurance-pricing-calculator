@@ -6,7 +6,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = ("src", "configs", "reports", "docs", "figures", "tests", "scripts", ".streamlit", "output/pdf")
-FILES = ("README.md", "CHECKPOINT.md", "app.py", "pyproject.toml", "requirements.lock.txt", "requirements-report.txt", ".gitignore")
+FILES = ("README.md", "CHECKPOINT.md", "app.py", "pyproject.toml", "requirements.txt", "requirements.lock.txt", "requirements-report.txt", ".gitignore")
 SUFFIXES = {".py", ".json", ".csv", ".md", ".png", ".jpg", ".pdf", ".toml", ".txt"}
 
 

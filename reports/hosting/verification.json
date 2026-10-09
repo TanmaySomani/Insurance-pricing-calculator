@@ -1,0 +1,39 @@
+{
+  "python": "3.14.7",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "fingerprint": "5b7f4832d54773ce257b8cd2b61f10bb4755d653304f572f059812db0b9fae91",
+  "pdf_pages": 2,
+  "pdf_sources_and_values_verified": true,
+  "pdf_link_verified": true,
+  "example_scenarios_recomputed": 5,
+  "aggregate_only_pages_verified": [
+    "Rate scenarios",
+    "Portfolio",
+    "Model comparison",
+    "Segment diagnostics",
+    "Risk calculator",
+    "Saved scenarios"
+  ],
+  "aggregate_only_live_edit_verified": true,
+  "aggregate_only_risk_setup_state_verified": true,
+  "models": "Not required for aggregate-only verification",
+  "reportlab_version": "4.4.9",
+  "pypdf_version": "6.10.0",
+  "scope": "Local checks. PDF visual review and remote CI status are recorded separately.",
+  "prepared_on": "2026-10-09",
+  "deployment_status": "Prepared, awaiting account sign-in and provider deployment",
+  "provider": "Streamlit Community Cloud",
+  "entrypoint": "app.py",
+  "selected_python": "3.14",
+  "local_tests_passed": 72,
+  "dependency_entrypoint_dry_run": "Passed; requirements.txt includes unchanged requirements.lock.txt",
+  "secrets_required": false,
+  "public_url_verified": null,
+  "source_checksums": {
+    "requirements.txt": "d421f5494d920352e8cf16229c7e7c8465b03a2e77e35701447d4b50c9c33119",
+    "requirements.lock.txt": "e009e0ed0c5db182827abf0beff67c7c7dea4b7d54e0cc1f3f5b877a2b4503bc",
+    "src/insurance_pricing/scenarios.py": "e54e0e1395d8792223c8ec5df049ceff390c69bba87b2e1132f02b2e1bc66d66",
+    "reports/comparison/selection.json": "dd29613918c0d914799c33abb29686f492ee4cea163bcf175fb2132ef8205947",
+    "reports/dashboard/manifest.json": "4a8c4c2cb46893ea3f22cd97471e5c53af9242cb704d22136c4cbad4236a913c"
+  }
+}

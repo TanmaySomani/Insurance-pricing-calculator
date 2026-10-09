@@ -1,0 +1,4 @@
+# Streamlit Community Cloud's recognised dependency entry point.
+# Preserve the verified application/model versions; Python 3.14 is selected
+# in the deployment form's Advanced settings, not through this file.
+-r requirements.lock.txt
